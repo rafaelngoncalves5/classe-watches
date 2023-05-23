@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-38ci9xjkchrc*b0w3ah&oe04tj3^gqn7nu%x4oj$zv03*g-7r_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'classewatches.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'classe-watches',
+        'USER': 'postgres',
+        'HOST': 'localhost',
+        'PASSWORD': 'birdscooter123',
+        'PORT': 5432
     }
 }
 
