@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Product(models.Model):
@@ -13,4 +14,13 @@ class Product(models.Model):
 
     def __str__(self):
         return str("Produto {0} tem id {1}, temos {2} disponíveis. O produto custa {3}!".format(self.name, self.id, self.quantity, self.price))
+    
+class Cart(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
+    total = models.FloatField(default=0.00, verbose_name="Total")
+    billing = models.FloatField(default=0.00, verbose_name="Frete")
+
+    def __str__(self):
+        return str("Carrinho pertence ao usuário {0}, e tem um id {1}!".format(self.user.name, self.id))
     
