@@ -3,5 +3,16 @@
 {% block title %} - Cadastre-se{% endblock title %}
 
 {% block content %}
-<h1>Sign up</h1>
+<main class="container">
+    {% include 'back.html' %}
+    <h1 class="display-4 text-center fw-bolder mb-5">Cadastre-se</h1>
+
+    <form method="post" class="row container p-5">
+        {% csrf_token %}
+        
+        {{ form.as_table }}
+
+        <button type="submit" class="btn btn-lg btn-dark my-5">Enviar</button>
+    </form>
+</main>
 {% endblock content %}
