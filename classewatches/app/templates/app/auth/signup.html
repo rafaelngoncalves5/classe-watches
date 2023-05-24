@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} - Cadastre-se{% endblock title %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'app/styles/forms.css' %}" />
+{% endblock extrahead %}
+
+{% block content %}
+<main class="container">
+    {% include 'back.html' %}
+    <h1 class="display-4 text-center fw-bolder mb-5">Cadastre-se</h1>
+
+    <form method="post" class="row container p-5 w-fit-content">
+        {% csrf_token %}
+        
+        {{ form.as_table }}
+
+        <button type="submit" class="btn btn-lg btn-dark my-5">Enviar</button>
+    </form>
+</main>
+{% endblock content %}

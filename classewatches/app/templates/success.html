@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} - Sucesso{% endblock title %}
+
+<!-- Generic heading block -->
+{% comment 'Block de cabeçalho genérico' %}{% endcomment %}
+
+{% block content %}
+<h1 class="mt-5 display-6 fw-bolder text-center">{% block heading %}Operação concluída com <strong
+        class="text-success">sucesso</strong>!{% endblock heading %}</h1>
+<p class="text-wrap lh-base lead px-5 py-2 text-center">{% block paragraph %}Esta operação foi concluída com sucesso! Já
+    pode voltar, ou fechar esta página.{% endblock paragraph %}</p>
+{# Aqui é onde vai ficar o logo #}
+<img class="d-block mx-auto img-fluid" src="{% static 'app/images/logo.png' %}" alt="Logo image" />
+<a href="{% url 'app:index' %}" class="btn btn-lg btn-dark d-block mx-auto m-5 fw-bolder col-6 col-lg-2 col-md-4">Ok</a>
+<!--  -->
+{% endblock content %}
