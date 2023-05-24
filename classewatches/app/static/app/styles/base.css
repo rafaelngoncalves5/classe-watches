@@ -1,0 +1,15 @@
+/* Variables and global rules */
+:root {
+    --dark-color: rgb(41, 41, 41);
+    --light-color: snow;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+}

@@ -1,1 +1,34 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block title %} - Encontre relógios de pulso{% endblock title %}
+
+{% block content %}
+<main class="container-fluid p-5">
+
+    <div class="p-2">
+        <img class="d-block mx-auto sticky" src="{% static 'app/images/logo.png' %}" />
+
+        <h1 class="fw-bolder display-1 text-light">Classe Watches</h1>
+
+        <h1 class="fw-bold display-6">Encontre relógios de pulso</h1>
+
+        <p class="mt-2 lead text-light">Localizado em Minas Gerais</p>
+
+    </div>
+
+    <div class="my-2" class="button-group" role="group">
+        <a href="" class="btn btn-dark btn-lg">Produtos</a>
+        <a href="" class="btn btn-outline-light btn-lg">Usuário</a>
+    </div>
+
+</main>
+
+<style>
+    main {
+        background-image: url("{% static 'app/images/background.jpg' %}");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
+{% endblock content %}
