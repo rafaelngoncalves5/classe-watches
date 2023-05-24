@@ -1,0 +1,17 @@
+{% extends 'base.html'%}
+
+{% load static %}
+
+{% block title %} - Sucesso{% endblock title %}
+
+{% block header %}
+{% block heading %}Operação concluída com <strong class="text-success">sucesso</strong>!{% endblock heading %}
+{% block paragraph %}Esta operação foi concluída com sucesso! Já pode voltar, ou fechar esta página.{% endblock paragraph %}
+{% block image %}
+<img class="d-block mx-auto img-fluid" src="{% static 'app/images/logo.png' %}" alt="Logo image" />
+{% endblock image %}
+{% endblock header %}
+
+{% block content %}
+{% include 'footer.html' %}
+{% endblock content %}

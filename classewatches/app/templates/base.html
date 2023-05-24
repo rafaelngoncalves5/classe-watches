@@ -19,14 +19,21 @@
     <link rel="icon" type="image/png" href="{% static 'favicon.ico' %}" />
 
     {% block extrahead %}
-    
+
     {% endblock extrahead %}
 
     <title>Classe Watches{% block title %}{% endblock title %}</title>
 
 </head>
 
-<!-- A script switches beetween light/dark, applying the styles accordingly -->
+<!-- Generic heading block -->
+{% comment 'Block de cabeçalho genérico' %}{% endcomment %}
+<button class="btn btn-sm btn-outline-dark m-5 px-5" onclick="history.back()">Voltar</button>
+<h1 class="m-4 display-6 fw-bolder text-center">{% block heading %}{% endblock heading %}</h1>
+<p class="text-wrap lh-base lead px-5 py-2 text-center">{% block paragraph %}{% endblock paragraph %}</p>
+{# Aqui é onde vai ficar o logo #}
+{% block image %}{% endblock image %}
+<!--  -->
 
 <body class="bg-light">
 
