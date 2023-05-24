@@ -4,7 +4,7 @@
 {% block title %} - Encontre relógios de pulso{% endblock title %}
 
 {% block content %}
-<main class="container-fluid p-5">
+<main class="container-fluid p-5 shadow-lg mb-5 bg-body-tertiary">
 
     <div class="p-2">
         <img class="d-block mx-auto sticky" src="{% static 'app/images/logo.png' %}" />
@@ -23,6 +23,8 @@
     </div>
 
 </main>
+
+{% include 'footer.html' %}
 
 <style>
     main {
