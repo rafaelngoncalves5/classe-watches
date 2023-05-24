@@ -11,7 +11,7 @@
 
         <h1 class="fw-bolder display-1 text-light">Classe Watches</h1>
 
-        <h1 class="fw-bold display-6">Encontre relógios de pulso</h1>
+        <h1 class="fw-bold display-6 text-warning">Encontre relógios de pulso</h1>
 
         <p class="mt-2 lead text-light">Localizado em Minas Gerais</p>
 
@@ -20,8 +20,8 @@
     <div class="my-2" class="button-group" role="group">
         <a href="" class="btn btn-dark btn-lg">Produtos</a>
 
-        {% if request.user %}
-        <a href="" class="btn btn-outline-light btn-lg">Olá {{ request.user.username }}</a>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'app:logout' %}" class="btn btn-outline-light btn-lg">Olá {{ request.user.username }}</a>
         {% else %}
         <a href="{% url 'app:login' %}" class="btn btn-outline-light btn-lg">Entrar</a>
         {% endif %}

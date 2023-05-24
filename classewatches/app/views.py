@@ -44,4 +44,7 @@ class SignUpView(generic.CreateView):
 
 class LoginView(LoginView):
     template_name = 'app/auth/login.html'
-    success_url = reverse_lazy('app:success')
+    next_page = reverse_lazy('app:success')
+
+class LogoutView(LogoutView):
+    next_page = reverse_lazy('app:success')
