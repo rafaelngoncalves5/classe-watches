@@ -19,7 +19,12 @@
 
     <div class="my-2" class="button-group" role="group">
         <a href="" class="btn btn-dark btn-lg">Produtos</a>
-        <a href="" class="btn btn-outline-light btn-lg">Usuário</a>
+
+        {% if request.user %}
+        <a href="" class="btn btn-outline-light btn-lg">Olá {{ request.user.username }}</a>
+        {% else %}
+        <a href="{% url 'app:login' %}" class="btn btn-outline-light btn-lg">Entrar</a>
+        {% endif %}
     </div>
 
 </main>

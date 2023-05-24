@@ -3,10 +3,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django import forms
+from django.contrib.auth.views import LoginView, LogoutView
 
 # Validators
 from django.core.exceptions import ValidationError
-from django.core.validators import validate_email
 
 # Create your views here.
 class IndexView(generic.TemplateView):
@@ -41,3 +41,7 @@ class SignUpView(generic.CreateView):
     context_object_name = 'User'
     success_url = reverse_lazy('app:success')
     form_class = SignUpForm
+
+class LoginView(LoginView):
+    template_name = 'app/auth/login.html'
+    success_url = reverse_lazy('app:success')
