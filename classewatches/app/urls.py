@@ -16,5 +16,6 @@ urlpatterns = [
 
     # Products
     path('user/admin/products/create', views.CreateProduct.as_view(), name='create_product'),
+    path('user/admin/products/update/<int:pk>', views.UpdateProduct.as_view(), name='update_product'),
     
 ]

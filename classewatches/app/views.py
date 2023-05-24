@@ -81,3 +81,10 @@ class CreateProduct(SuperUserRequiredMixin, generic.CreateView):
     template_name = 'app/admin/products/create.html'
     success_url = reverse_lazy('app:success')
     form_class = ProductForm
+
+class UpdateProduct(SuperUserRequiredMixin, generic.UpdateView):
+    login_url = reverse_lazy('app:login')
+    template_name = 'app/admin/products/create.html'
+    success_url = reverse_lazy('app:success')
+    form_class = ProductForm
+    model = Product

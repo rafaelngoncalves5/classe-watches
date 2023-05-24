@@ -31,7 +31,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
                         <span class="text-wrap">{{ product }}</span>
                         <span> | </span>
                         <div class="btn-group" role="group">
-                            <a class="btn btn-sm btn-info">Editar</a>
+                            <a href="{% url 'app:update_product' product.id %}" class="btn btn-sm btn-info">Editar</a>
                             <a class="btn btn-sm btn-danger">Excluir</a>
                         </div>
 

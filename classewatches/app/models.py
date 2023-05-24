@@ -56,4 +56,4 @@ class Product(models.Model):
     image3 = models.FileField(upload_to='static', verbose_name="Imagem 3")
 
     def __str__(self):
-        return str("Produto {0} tem id {1}, temos {2} disponíveis. O produto custa R$ {3}!".format(self.title, self.id, self.quantity, self.price))
+        return str("Produto {0} tem id {1}, temos {2} unidade(s) em estoque. O produto custa R$ {3}!".format(self.title, self.id, self.quantity, self.price))
