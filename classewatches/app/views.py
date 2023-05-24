@@ -4,6 +4,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django import forms
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from . models import Order, Product, Cart
 
 # Validators
 from django.core.exceptions import ValidationError
@@ -48,3 +50,34 @@ class LoginView(LoginView):
 
 class LogoutView(LogoutView):
     next_page = reverse_lazy('app:success')
+
+# User
+class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self) -> bool | None:
+        return self.request.user.is_superuser
+
+class AdminView(SuperUserRequiredMixin, generic.TemplateView):
+    template_name = 'app/admin/index.html'
+    login_url = reverse_lazy('app:login')
+
+    def get_context_data(self, **kwargs):
+        context = {
+            'Order': Order.objects.all().order_by('order_date'),
+            'Product': Product.objects.all().order_by('-quantity'),
+            'User': User.objects.all(),
+        }
+
+        return context
+    
+# Products
+class ProductForm(forms.ModelForm):
+    quantity = forms.IntegerField(label="Quantidade", min_value=1, initial=1)
+    class Meta:
+        model = Product
+        fields = ['title', 'description', 'price', 'quantity', 'image_cover', 'image2', 'image3']
+
+class CreateProduct(SuperUserRequiredMixin, generic.CreateView):
+    login_url = reverse_lazy('app:login')
+    template_name = 'app/admin/products/create.html'
+    success_url = reverse_lazy('app:success')
+    form_class = ProductForm

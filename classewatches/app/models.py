@@ -46,7 +46,7 @@ class Product(models.Model):
     order = models.ManyToManyField(Order, editable=False, verbose_name="Pedido")
 
     title = models.CharField(max_length=25, verbose_name="Título")
-    description = models.CharField(max_length=50, verbose_name="Descrição")
+    description = models.CharField(max_length=150, verbose_name="Descrição")
     price = models.FloatField(default=0.00, verbose_name="Preço")
     quantity = models.IntegerField(default=1, verbose_name="Quantidade")
 
@@ -56,4 +56,4 @@ class Product(models.Model):
     image3 = models.FileField(upload_to='static', verbose_name="Imagem 3")
 
     def __str__(self):
-        return str("Produto {0} tem id {1}, temos {2} disponíveis. O produto custa R$ {3}!".format(self.name, self.id, self.quantity, self.price))
+        return str("Produto {0} tem id {1}, temos {2} disponíveis. O produto custa R$ {3}!".format(self.title, self.id, self.quantity, self.price))
