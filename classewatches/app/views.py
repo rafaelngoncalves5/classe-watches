@@ -23,10 +23,14 @@ class SignUpForm(UserCreationForm):
 
     def clean(self):
         form_data = self.cleaned_data
-        if form_data['email'] == form_data['email2']:
+        email_exists = User.objects.filter(email=form_data['email']).exists()
+
+        if form_data['email'] == form_data['email2'] and not email_exists:
             return form_data
-        # Contrarily validators, return an exception
-        raise ValidationError("Emails não são iguais.")
+        elif not form_data['email'] == form_data['email2']:
+            raise ValidationError("Emails não são iguais.")
+        elif email_exists:
+            raise ValidationError("Email já cadastrado.")
 
     class Meta(UserCreationForm.Meta):
         fields = ('first_name', 'last_name', 'email', 'email2',)
