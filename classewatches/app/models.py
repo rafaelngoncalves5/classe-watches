@@ -10,7 +10,7 @@ class Cart(models.Model):
     billing = models.FloatField(default=0.00, verbose_name="Frete")
 
     def __str__(self):
-        return str("Carrinho pertence ao usuário {0}, e tem um id {1}!".format(self.user.name, self.id))
+        return str("Carrinho pertence ao usuário {0}, e tem um id {1}!".format(self.user.username, self.id))
     
 class Order(models.Model):
      
@@ -21,7 +21,7 @@ class Order(models.Model):
     ]
     
     id = models.CharField(max_length=900, primary_key=True)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, editable=False, verbose_name="Carrinho")
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name="Carrinho")
     total = models.FloatField(default=0.00, verbose_name="Total")
     order_date = models.DateField(default=timezone.now, auto_now_add=False, verbose_name="Data do pedido")
     phone_number = models.CharField(max_length=14, verbose_name="Telefone")

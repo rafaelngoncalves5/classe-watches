@@ -16,6 +16,28 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
 
     <section class="container">
 
+        {# Order model #}
+        <div class="row d-flex justify-content-center bg-light my-5 card p-3">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'app:create_order' %}" class="btn btn-sm btn-link text-info fw-bold">Criar</a>
+            </div>
+            <h2 class="text-center fw-bold">Pedidos</h2>
+            <details>
+                <summary>Ver mais</summary>
+
+                <ul class="list-group">
+                    {% for order in Order %}
+                    <li class="list-group-item">
+                        <small class="text-wrap fw-lighter">{{ order }}</small>
+                        <span> | </span>
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'app:update_order' order.id %}" class="btn btn-sm btn-info">Editar</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </details>
+        </div>
+
         {# product model #}
         <div class="row d-flex justify-content-center bg-light my-5 card p-3">
             <div class="d-flex justify-content-end">

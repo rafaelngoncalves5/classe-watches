@@ -115,3 +115,16 @@ class DeleteUserView(SuperUserRequiredMixin, generic.DeleteView):
     login_url = reverse_lazy('app:login')
     model = User
     success_url = reverse_lazy('app:success')
+
+class OrderCreateView(SuperUserRequiredMixin, generic.CreateView):
+    login_url = reverse_lazy('app:login')
+    model = Order
+    success_url = reverse_lazy('app:success')
+    template_name = 'app/admin/order/create.html'
+    fields = ['cart', 'total', 'order_date', 'phone_number', 'phone_number2', 'state', 'district', 'street', 'street_number', 'complement', 'cep', 'status', 'tracking_link']
+
+class OrderUpdateView(SuperUserRequiredMixin, generic.UpdateView):
+    login_url = reverse_lazy('app:login')
+    model = Order
+    success_url = reverse_lazy('app:success')
+    template_name = 'app/admin/order/'
