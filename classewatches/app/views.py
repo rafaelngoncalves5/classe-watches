@@ -135,3 +135,9 @@ class OrderDetailsView(SuperUserRequiredMixin, generic.DetailView):
     template_name = 'app/admin/order/details.html'
     model = Order
     context_object_name = 'Order'
+
+# Products
+class ProductsView(generic.ListView):
+    queryset = Product.objects.all().order_by('-price')
+    context_object_name = 'Product'
+    template_name = 'app/products/index.html'
