@@ -1,6 +1,7 @@
-<footer class="bg-light text-center text-white pt-5">
+{% load static %}
+<footer class="my-5 bg-light text-center text-white pt-5">
     <!-- Grid container -->
-    <div class="container p-4 pb-0">
+    <div class="pb-0">
         <!-- Section: Social media -->
         <section class="mb-4">
             <!-- Facebook -->
@@ -23,6 +24,9 @@
         <!-- Section: Social media -->
     </div>
     <!-- Grid container -->
+
+    <img class="img-fluid mt-2 mb-3" style="width: 28vh;" src="{% static 'app/images/paymentmethods.png' %}" />
+
 
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
