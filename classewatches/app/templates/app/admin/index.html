@@ -31,8 +31,9 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
                         <small class="text-wrap fw-lighter">{{ order }}</small>
                         <span> | </span>
                         <div class="btn-group" role="group">
+                            <a href="{% url 'app:details_order' order.id %}" class="btn btn-sm btn-warning">Detalhes</a>
                             <a href="{% url 'app:update_order' order.id %}" class="btn btn-sm btn-info">Editar</a>
-                    </li>
+                        </li>
                     {% endfor %}
                 </ul>
             </details>

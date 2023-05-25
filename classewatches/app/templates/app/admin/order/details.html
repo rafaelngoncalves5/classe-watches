@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} - Detalhes do pedido{% endblock title %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'app/styles/forms.css' %}" />
+{% endblock extrahead %}
+
+{% block content %}
+<main class="container">
+    {% include 'back.html' %}
+    <h1 class="display-4 text-center fw-bolder mb-5">Detalhes do pedido</h1>
+
+    {{ Order }}
+</main>
+{% endblock content %}

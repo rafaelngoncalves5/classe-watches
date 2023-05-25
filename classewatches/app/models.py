@@ -20,7 +20,7 @@ class Order(models.Model):
         ('despachado', 'despachado')
     ]
     
-    id = models.CharField(max_length=900, primary_key=True)
+    id = models.SlugField(max_length=900, primary_key=True, null=False)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name="Carrinho")
     total = models.FloatField(default=0.00, verbose_name="Total")
     order_date = models.DateField(default=timezone.now, auto_now_add=False, verbose_name="Data do pedido")
