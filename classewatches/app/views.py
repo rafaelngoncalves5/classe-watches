@@ -93,3 +93,11 @@ class DeleteProductView(SuperUserRequiredMixin, generic.DeleteView):
     login_url = reverse_lazy('app:login')
     model = Product
     success_url = reverse_lazy('app:success')
+
+# User
+class UpdateUser(SuperUserRequiredMixin, generic.UpdateView):
+    login_url = reverse_lazy('app:login')
+    model = User
+    form_class = UserCreationForm
+    template_name = 'app/admin/user/update.html'
+    success_url = reverse_lazy('app:success')

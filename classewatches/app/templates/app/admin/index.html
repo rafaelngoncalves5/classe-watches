@@ -73,7 +73,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
         {# User model #}
         <div class="row d-flex justify-content-center bg-light my-5 card p-3">
             <div class="d-flex justify-content-end">
-                <a href="" class="btn btn-sm btn-link text-info fw-bold">Criar</a>
+                <a href="{% url 'app:signup' %}" class="btn btn-sm btn-link text-info fw-bold">Criar</a>
             </div>
             <h2 class="text-center fw-bold">Usuário</h2>
             <details>
@@ -85,7 +85,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
                         <small class="text-wrap fw-lighter">Usuário {{ user.username|capfirst }}</small>
                         <span> | </span>
                         <div class="btn-group" role="group">
-                            <a href="" class="btn btn-sm btn-info">Editar</a>
+                            <a href="{% url 'app:update_user' user.id %}" class="btn btn-sm btn-info">Editar</a>
 
                             <!-- Button trigger modal -->
                             <button data-bs-toggle="modal" data-bs-target="#deleteUser"
