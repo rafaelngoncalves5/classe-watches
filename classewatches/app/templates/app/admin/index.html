@@ -15,6 +15,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
     <p class="text-center lead">Bem vindo</p>
 
     <section class="container">
+
         {# User model #}
         <div class="row d-flex justify-content-center bg-light my-5 card p-3">
             <div class="d-flex justify-content-end">
@@ -27,13 +28,42 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
                 <ul class="list-group">
                     {% for product in Product %}
                     <li class="list-group-item">
-
-                        <span class="text-wrap">{{ product }}</span>
+                        <small class="text-wrap fw-lighter">{{ product }}</small>
                         <span> | </span>
                         <div class="btn-group" role="group">
                             <a href="{% url 'app:update_product' product.id %}" class="btn btn-sm btn-info">Editar</a>
-                            <a class="btn btn-sm btn-danger">Excluir</a>
+
+                            <!-- Button trigger modal -->
+                            <button data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                class="btn btn-sm btn-danger">Excluir</button>
+
+                            <!-- Modal -->
+                            <form method="post" action="{% url 'app:delete_product' product.id %}" >
+                                {% csrf_token %}
+                                <div class="modal fade text-danger" id="deleteModal" tabindex="-1"
+                                    aria-labelledby="deleteModal" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="deleteModal">ATENÇÃO</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Tem certeza que deseja excluir esse produto? Essa operação não poderá
+                                                ser desfeita
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Não</button>
+                                                <button type="submit" type="button"
+                                                    class="btn btn-danger">Sim</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
+                        </form>
 
                     </li>
                     {% endfor %}

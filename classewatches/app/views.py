@@ -76,15 +76,20 @@ class ProductForm(forms.ModelForm):
         model = Product
         fields = ['title', 'description', 'price', 'quantity', 'image_cover', 'image2', 'image3']
 
-class CreateProduct(SuperUserRequiredMixin, generic.CreateView):
+class CreateProductView(SuperUserRequiredMixin, generic.CreateView):
     login_url = reverse_lazy('app:login')
     template_name = 'app/admin/products/create.html'
     success_url = reverse_lazy('app:success')
     form_class = ProductForm
 
-class UpdateProduct(SuperUserRequiredMixin, generic.UpdateView):
+class UpdateProductView(SuperUserRequiredMixin, generic.UpdateView):
     login_url = reverse_lazy('app:login')
     template_name = 'app/admin/products/create.html'
     success_url = reverse_lazy('app:success')
     form_class = ProductForm
     model = Product
+
+class DeleteProductView(SuperUserRequiredMixin, generic.DeleteView):
+    login_url = reverse_lazy('app:login')
+    model = Product
+    success_url = reverse_lazy('app:success')
