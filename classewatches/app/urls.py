@@ -13,7 +13,8 @@ urlpatterns = [
 
     # User
     path('user/admin', views.AdminView.as_view(), name='admin'),
-    path('user/admin/update/<int:pk>', views.UpdateUser.as_view(), name='update_user'),
+    path('user/admin/update/<int:pk>', views.UpdateUserView.as_view(), name='update_user'),
+    path('user/admin/delete/<int:pk>', views.DeleteUserView.as_view(), name='delete_user'),
 
     # Products
     path('user/admin/products/create', views.CreateProductView.as_view(), name='create_product'),

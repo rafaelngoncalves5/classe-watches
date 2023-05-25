@@ -1,11 +1,15 @@
+from typing import Any
+from django.http import HttpRequest, HttpResponse
 from django.views import generic
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.urls import reverse_lazy
 from django import forms
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from . models import Order, Product, Cart
+from django.shortcuts import render, redirect
+from django.contrib.auth import password_validation
 
 # Validators
 from django.core.exceptions import ValidationError
@@ -35,7 +39,7 @@ class SignUpForm(UserCreationForm):
             raise ValidationError("Email já cadastrado.")
 
     class Meta(UserCreationForm.Meta):
-        fields = ('first_name', 'last_name', 'email', 'email2',)
+        fields = ('username', 'first_name', 'last_name', 'email', 'email2',)
     
 class SignUpView(generic.CreateView):
     template_name = 'app/auth/signup.html'
@@ -95,9 +99,19 @@ class DeleteProductView(SuperUserRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy('app:success')
 
 # User
-class UpdateUser(SuperUserRequiredMixin, generic.UpdateView):
+class UpdateUserForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'is_superuser',)
+
+class UpdateUserView(SuperUserRequiredMixin, generic.UpdateView):
     login_url = reverse_lazy('app:login')
     model = User
-    form_class = UserCreationForm
+    success_url = reverse_lazy('app:success')
+    form_class = UpdateUserForm
     template_name = 'app/admin/user/update.html'
+
+class DeleteUserView(SuperUserRequiredMixin, generic.DeleteView):
+    login_url = reverse_lazy('app:login')
+    model = User
     success_url = reverse_lazy('app:success')
