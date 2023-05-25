@@ -1,9 +1,15 @@
+from typing import Any
+from django.http import HttpRequest, HttpResponse
 from django.views import generic
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.urls import reverse_lazy
 from django import forms
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from . models import Order, Product, Cart
+from django.shortcuts import render, redirect
+from django.contrib.auth import password_validation
 
 # Validators
 from django.core.exceptions import ValidationError
@@ -33,7 +39,7 @@ class SignUpForm(UserCreationForm):
             raise ValidationError("Email já cadastrado.")
 
     class Meta(UserCreationForm.Meta):
-        fields = ('first_name', 'last_name', 'email', 'email2',)
+        fields = ('username', 'first_name', 'last_name', 'email', 'email2',)
     
 class SignUpView(generic.CreateView):
     template_name = 'app/auth/signup.html'
@@ -48,3 +54,84 @@ class LoginView(LoginView):
 
 class LogoutView(LogoutView):
     next_page = reverse_lazy('app:success')
+
+# User
+class SuperUserRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self) -> bool | None:
+        return self.request.user.is_superuser
+
+class AdminView(SuperUserRequiredMixin, generic.TemplateView):
+    template_name = 'app/admin/index.html'
+    login_url = reverse_lazy('app:login')
+
+    def get_context_data(self, **kwargs):
+        context = {
+            'Order': Order.objects.all().order_by('order_date'),
+            'Product': Product.objects.all().order_by('-quantity'),
+            'User': User.objects.all(),
+        }
+
+        return context
+    
+# Products
+class ProductForm(forms.ModelForm):
+    quantity = forms.IntegerField(label="Quantidade", min_value=1, initial=1)
+    class Meta:
+        model = Product
+        fields = ['title', 'description', 'price', 'quantity', 'image_cover', 'image2', 'image3']
+
+class CreateProductView(SuperUserRequiredMixin, generic.CreateView):
+    login_url = reverse_lazy('app:login')
+    template_name = 'app/admin/products/create.html'
+    success_url = reverse_lazy('app:success')
+    form_class = ProductForm
+
+class UpdateProductView(SuperUserRequiredMixin, generic.UpdateView):
+    login_url = reverse_lazy('app:login')
+    template_name = 'app/admin/products/create.html'
+    success_url = reverse_lazy('app:success')
+    form_class = ProductForm
+    model = Product
+
+class DeleteProductView(SuperUserRequiredMixin, generic.DeleteView):
+    login_url = reverse_lazy('app:login')
+    model = Product
+    success_url = reverse_lazy('app:success')
+
+# User
+class UpdateUserForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'is_superuser',)
+
+class UpdateUserView(SuperUserRequiredMixin, generic.UpdateView):
+    login_url = reverse_lazy('app:login')
+    model = User
+    success_url = reverse_lazy('app:success')
+    form_class = UpdateUserForm
+    template_name = 'app/admin/user/update.html'
+
+class DeleteUserView(SuperUserRequiredMixin, generic.DeleteView):
+    login_url = reverse_lazy('app:login')
+    model = User
+    success_url = reverse_lazy('app:success')
+
+class OrderCreateView(SuperUserRequiredMixin, generic.CreateView):
+    login_url = reverse_lazy('app:login')
+    model = Order
+    success_url = reverse_lazy('app:success')
+    template_name = 'app/admin/order/create.html'
+    fields = ['id', 'cart', 'total', 'order_date', 'phone_number', 'phone_number2', 'state', 'district', 'street', 'street_number', 'complement', 'cep', 'status', 'tracking_link']
+
+class OrderUpdateView(SuperUserRequiredMixin, generic.UpdateView):
+    login_url = reverse_lazy('app:login')
+    model = Order
+    success_url = reverse_lazy('app:success')
+    template_name = 'app/admin/order/update.html'
+    fields = ['status', 'tracking_link']
+
+class OrderDetailsView(SuperUserRequiredMixin, generic.DetailView):
+    login_url = reverse_lazy('app:login')
+    template_name = 'app/admin/order/details.html'
+    model = Order
+    context_object_name = 'Order'

@@ -10,7 +10,7 @@ class Cart(models.Model):
     billing = models.FloatField(default=0.00, verbose_name="Frete")
 
     def __str__(self):
-        return str("Carrinho pertence ao usuário {0}, e tem um id {1}!".format(self.user.name, self.id))
+        return str("Carrinho pertence ao usuário {0}, e tem um id {1}!".format(self.user.username, self.id))
     
 class Order(models.Model):
      
@@ -20,8 +20,8 @@ class Order(models.Model):
         ('despachado', 'despachado')
     ]
     
-    id = models.CharField(max_length=900, primary_key=True)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, editable=False, verbose_name="Carrinho")
+    id = models.SlugField(max_length=900, primary_key=True, null=False)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name="Carrinho")
     total = models.FloatField(default=0.00, verbose_name="Total")
     order_date = models.DateField(default=timezone.now, auto_now_add=False, verbose_name="Data do pedido")
     phone_number = models.CharField(max_length=14, verbose_name="Telefone")
@@ -36,7 +36,7 @@ class Order(models.Model):
     tracking_link = models.URLField(verbose_name="Link de rastreamento", null=True)
 
     def __str__(self):
-        return str(f"Pedido com id {self.id}, do carrinho {self.cart.id}, num valor total de R$ {self.total}!")
+        return str(f"Pedido feito na data de {self.order_date.day}/{self.order_date.month}/{self.order_date.year}")
 
 class Product(models.Model):
     id = models.AutoField(primary_key=True)
@@ -46,7 +46,7 @@ class Product(models.Model):
     order = models.ManyToManyField(Order, editable=False, verbose_name="Pedido")
 
     title = models.CharField(max_length=25, verbose_name="Título")
-    description = models.CharField(max_length=50, verbose_name="Descrição")
+    description = models.CharField(max_length=150, verbose_name="Descrição")
     price = models.FloatField(default=0.00, verbose_name="Preço")
     quantity = models.IntegerField(default=1, verbose_name="Quantidade")
 
@@ -56,4 +56,4 @@ class Product(models.Model):
     image3 = models.FileField(upload_to='static', verbose_name="Imagem 3")
 
     def __str__(self):
-        return str("Produto {0} tem id {1}, temos {2} disponíveis. O produto custa R$ {3}!".format(self.name, self.id, self.quantity, self.price))
+        return str("Produto {0} tem id {1}, temos {2} unidade(s) em estoque. O produto custa R$ {3}!".format(self.title, self.id, self.quantity, self.price))

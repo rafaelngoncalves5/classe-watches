@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %} - Administração{% endblock title %}
+
+{% comment 'Descrevendo o template' %}
+Este template vai dar acesso completo as models "User", "Product" e "Order"
+{% endcomment %}
+
+{% block content %}
+{% include 'back.html' %}
+
+<main class="container-fluid">
+    <h1 class="display-4 text-center fw-bolder mb-5">Olá administrador, <strong>{{ request.user.username|capfirst }}
+    </h1>
+    <p class="text-center lead">Bem vindo</p>
+
+    <section class="container">
+
+        {# Order model #}
+        <div class="row d-flex justify-content-center bg-light my-5 card p-3">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'app:create_order' %}" class="btn btn-sm btn-link text-info fw-bold">Criar</a>
+            </div>
+            <h2 class="text-center fw-bold">Pedidos</h2>
+            <details>
+                <summary>Ver mais</summary>
+
+                <ul class="list-group">
+                    {% for order in Order %}
+                    <li class="list-group-item">
+                        <small class="text-wrap fw-lighter">{{ order }}</small>
+                        <span> | </span>
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'app:details_order' order.id %}" class="btn btn-sm btn-warning">Detalhes</a>
+                            <a href="{% url 'app:update_order' order.id %}" class="btn btn-sm btn-info">Editar</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </details>
+        </div>
+
+        {# product model #}
+        <div class="row d-flex justify-content-center bg-light my-5 card p-3">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'app:create_product' %}" class="btn btn-sm btn-link text-info fw-bold">Criar</a>
+            </div>
+            <h2 class="text-center fw-bold">Produtos</h2>
+            <details>
+                <summary>Ver mais</summary>
+
+                <ul class="list-group">
+                    {% for product in Product %}
+                    <li class="list-group-item">
+                        <small class="text-wrap fw-lighter">{{ product }}</small>
+                        <span> | </span>
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'app:update_product' product.id %}" class="btn btn-sm btn-info">Editar</a>
+
+                            <!-- Button trigger modal -->
+                            <button data-bs-toggle="modal" data-bs-target="#deleteProduct"
+                                class="btn btn-sm btn-danger">Excluir</button>
+
+                            <!-- Modal -->
+                            <form method="post" action="{% url 'app:delete_product' product.id %}">
+                                {% csrf_token %}
+                                <div class="modal fade text-danger" id="deleteProduct" tabindex="-1"
+                                    aria-labelledby="deleteProduct" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="deleteProduct">ATENÇÃO</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Tem certeza que deseja excluir esse produto? Essa operação não poderá
+                                                ser desfeita
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Não</button>
+                                                <button type="submit" type="button" class="btn btn-danger">Sim</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        </form>
+
+                    </li>
+                    {% endfor %}
+                </ul>
+            </details>
+        </div>
+
+        {# User model #}
+        <div class="row d-flex justify-content-center bg-light my-5 card p-3">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'app:signup' %}" class="btn btn-sm btn-link text-info fw-bold">Criar</a>
+            </div>
+            <h2 class="text-center fw-bold">Usuário</h2>
+            <details>
+                <summary>Ver mais</summary>
+
+                <ul class="list-group">
+                    {% for user in User %}
+                    <li class="list-group-item">
+                        <small class="text-wrap fw-lighter">Usuário {{ user.username|capfirst }}</small>
+                        <span> | </span>
+                        <div class="btn-group" role="group">
+                            <a href="{% url 'app:update_user' user.id %}" class="btn btn-sm btn-info">Editar</a>
+
+                            <!-- Button trigger modal -->
+                            <button data-bs-toggle="modal" data-bs-target="#deleteUser"
+                                class="btn btn-sm btn-danger">Excluir</button>
+
+                            <!-- Modal -->
+                            <form method="post" action="{% url 'app:delete_user' user.id %}">
+                                {% csrf_token %}
+                                <div class="modal fade text-danger" id="deleteUser" tabindex="-1"
+                                    aria-labelledby="deleteUser" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="deleteUser">ATENÇÃO</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Tem certeza que deseja excluir esse usuário? Essa operação não poderá
+                                                ser desfeita
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Não</button>
+                                                <button type="submit" type="button" class="btn btn-danger">Sim</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                        </form>
+
+                    </li>
+                    {% endfor %}
+                </ul>
+            </details>
+        </div>
+
+    </section>
+</main>
+
+{% endblock content %}
