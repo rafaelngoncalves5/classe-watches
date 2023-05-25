@@ -141,3 +141,8 @@ class ProductsView(generic.ListView):
     queryset = Product.objects.all().order_by('-price')
     context_object_name = 'Product'
     template_name = 'app/products/index.html'
+
+class ProductsDetailsView(generic.DetailView):
+    model = Product
+    context_object_name = 'Product'
+    template_name = 'app/products/details.html'

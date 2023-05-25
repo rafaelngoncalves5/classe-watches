@@ -11,13 +11,14 @@
     <div class="row col-12 w-fit-content d-flex justify-content-center gap-2">
         {% for product in Product %}
         <div class="shadow-lg p-1 rounded col-lg-3 col-md-4 col-sm-10 col-10 border my-2">
-            <a class="text-decoration-none" href="">
+            <a class="text-decoration-none" href="{% url 'app:product_details' product.id %}">
                 <img class="img-fluid border border-5 border-light rounded" src="{{ product.image_cover.url }}" />
                 <div class="border-top p-3">
-                    <p class="fw-bolder text-dark text-truncate lead">{{ product.title }}</p>
+                    <p class="fw-bolder text-dark text-truncate lead">{{ product.title|capfirst }}</p>
                     <p class="text-truncate text-body-secondary fw-lighter">{{ product.description }}</p>
                     <hr />
                     <span class="fs-4 fw-bold text-success">R$ {{ product.price }}</span>
+                    <button class="btn btn-dark mt-3 lead w-100 text-light">Guardar</button>
                 </div>
             </a>
         </div>
