@@ -36,7 +36,7 @@ class Order(models.Model):
     tracking_link = models.URLField(verbose_name="Link de rastreamento", null=True)
 
     def __str__(self):
-        return str(f"Pedido com id {self.id}, do carrinho {self.cart.id}, num valor total de R$ {self.total}!")
+        return str(f"Pedido feito na data de {self.order_date.day}/{self.order_date.month}/{self.order_date.year}")
 
 class Product(models.Model):
     id = models.AutoField(primary_key=True)

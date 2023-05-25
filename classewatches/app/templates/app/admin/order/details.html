@@ -8,10 +8,37 @@
 {% endblock extrahead %}
 
 {% block content %}
-<main class="container">
+<main class="container-fluid">
     {% include 'back.html' %}
-    <h1 class="display-4 text-center fw-bolder mb-5">Detalhes do pedido</h1>
+    <h1 class="fs-2 text-center fw-bolder mb-5">Detalhes do pedido</h1>
+    <br />
 
-    {{ Order }}
+    {# Dados do pedido #}
+    <ul class="list-group text-center list-group-flush">
+        <li class="list-group-item"><span class="fw-bold">Data</span> - {{ Order }}</li>
+        <li class="list-group-item"><span class="fw-bold">Id</span> - {{ Order.id }}</li>
+        <li class="list-group-item"><span class="fw-bold">Total</span> - R$ {{ Order.total }}</li>
+        <li class="list-group-item"><span class="fw-bold">Telefone</span> - {{ Order.phone_number }}</li>
+        <li class="list-group-item"><span class="fw-bold">Telefone 2</span> - {{ Order.phone_number2 }}</li>
+    </ul>
+
+    <hr />
+
+    <h2 class="fs-2 text-center my-5 fw-bolder">Dados de entrega</h2>
+    {# Dados de entrega #}
+    <ul class="list-group text-center list-group-flush">
+        <li class="list-group-item"><span class="fw-bold">Estado</span> - {{ Order.state }}</li>
+        <li class="list-group-item"><span class="fw-bold">Bairro</span> - {{ Order.district }}</li>
+        <li class="list-group-item"><span class="fw-bold">Rua</span> - {{ Order.street }}</li>
+        <li class="list-group-item"><span class="fw-bold">Número da rua</span> - {{ Order.street_number }}</li>
+        <li class="list-group-item"><span class="fw-bold">Complemento</span> - {{ Order.complement }}</li>
+        <li class="list-group-item"><span class="fw-bold">CEP</span> - {{ Order.postal_code }}</li>
+        <li class="list-group-item"><span class="fw-bold">Status do pedido</span> - {{ Order.status }}</li>
+        <li class="list-group-item"><span class="fw-bold">Link de rastreamneto</span> - <a href="{{ order.tracking_link }}" class="stretched-link">
+            <p class="text-truncate text-wrap">{{ Order.tracking_link }}</p>
+        </a></li>
+
+    </ul>
+
 </main>
 {% endblock content %}
