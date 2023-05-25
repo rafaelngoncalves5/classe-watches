@@ -51,9 +51,9 @@ class Product(models.Model):
     quantity = models.IntegerField(default=1, verbose_name="Quantidade")
 
     # Images
-    image_cover = models.FileField(upload_to='static/', verbose_name="Imagem de capa")
-    image2 = models.FileField(upload_to='static/', verbose_name="Imagem 2")
-    image3 = models.FileField(upload_to='static', verbose_name="Imagem 3")
+    image_cover = models.FileField(upload_to='static/', verbose_name="Imagem de capa", help_text="Por favor, tire a foto na vertical.")
+    image2 = models.FileField(upload_to='static/', verbose_name="Imagem 2", help_text="Por favor, tire a foto na vertical.")
+    image3 = models.FileField(upload_to='static', verbose_name="Imagem 3", help_text="Por favor, tire a foto na vertical.")
 
     def __str__(self):
         return str("Produto {0} tem id {1}, temos {2} unidade(s) em estoque. O produto custa R$ {3}!".format(self.title, self.id, self.quantity, self.price))

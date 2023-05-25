@@ -4,18 +4,19 @@
 {% block title %} - Produtos{% endblock title %}
 
 {% block content %}
+{% include 'header.html' %}
 {% include 'back.html' %}
 
-<main class="container d-flex justify-content-center">
+<main class="container-fluid d-flex justify-content-center">
     <div class="row col-12 w-fit-content d-flex justify-content-center gap-2">
         {% for product in Product %}
-        <div class="shadow-lg p-1 rounded col-lg-4 col-md-8 col-sm-10 border my-2">
+        <div class="shadow-lg p-1 rounded col-lg-3 col-md-4 col-sm-10 col-10 border my-2">
             <a class="text-decoration-none" href="">
                 <img class="img-fluid border border-5 border-light rounded" src="{{ product.image_cover.url }}" />
                 <div class="border-top p-3">
                     <p class="fw-bolder text-dark text-truncate lead">{{ product.title }}</p>
                     <p class="text-truncate text-body-secondary fw-lighter">{{ product.description }}</p>
-                    <hr class="" />
+                    <hr />
                     <span class="fs-4 fw-bold text-success">R$ {{ product.price }}</span>
                 </div>
             </a>
