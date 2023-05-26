@@ -41,6 +41,8 @@ class Order(models.Model):
     ]
     
     id = models.SlugField(max_length=900, primary_key=True, null=False)
+    first_name = models.CharField(null=False, max_length=150)
+    last_name = models.CharField(null=False, max_length=150)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name="Carrinho")
     products = models.ManyToManyField(Product, verbose_name="Produtos")
     total = models.FloatField(default=0.00, verbose_name="Total")
