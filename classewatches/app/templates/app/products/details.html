@@ -42,18 +42,22 @@
                 </div>
             </div>
             <div class="mt-2 col-sm-5 offset-sm-2 col-md-6 offset-md-0 card bg-light text-dark">
-                <h1 class="fs-5 text-truncate text-wrap lead fw-light text-dark p-2 border-bottom">{{ Product.title }}</h1>
+                <h1 class="fs-5 text-truncate text-wrap lead fw-light text-dark p-2 border-bottom">{{ Product.title }}
+                </h1>
                 <div class="my-2">
                     <p class="fw-lighter lead text-dark text-wrap mt-5">{{ Product.description }}</p>
                     <p class="fw-lighter lead text-dark text-wrap">R$ {{ Product.price }}</p>
                     <p class="fw-bold lead text-success text-wrap mt-5">Disponível</p>
                 </div>
-                <button class="mt-4 mb-3 text-primary btn-outline-light rounded-2 btn btn-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
-                        class="bi bi-cart-fill" viewBox="0 0 16 16">
-                        <path
-                            d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
-                    </svg>
+                <form method="post" action="{% url 'app:add_to_cart' Product.id %}">
+                    {% csrf_token %}
+                    <button class="mt-4 mb-3 text-primary btn-outline-light rounded-2 btn btn-lg">
+                </form>
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                    class="bi bi-cart-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                </svg>
                 </button>
             </div>
         </div>

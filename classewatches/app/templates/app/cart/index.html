@@ -8,7 +8,7 @@
 {% include 'back.html' %}
 
 <main class="container-fluid d-flex justify-content-center">
-    {% for product in Cart.user_set.all %}
+    {% for product in Cart.product_set.all %}
         <p>{{ product }}</p>
     {% endfor %}
 </main>

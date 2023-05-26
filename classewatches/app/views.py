@@ -1,6 +1,6 @@
 from typing import Any
 from django.forms.models import BaseModelForm
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse, Http404
 from django.views import generic
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -9,7 +9,7 @@ from django import forms
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from . models import Order, Product, Cart
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import password_validation
 
 # Validators
@@ -167,6 +167,15 @@ class CartView(LoginRequiredMixin, generic.DetailView):
     model = Cart
     context_object_name = 'Cart'
 
-def add_to_cart(request):
-    if request.method == 'POST':
-        pass
+def add_to_cart(request, id):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            # 1 - Grabs the cart
+            cart: Cart = get_object_or_404(Cart, pk=request.user.cart.id)
+            # 2 - Grabs a product id, via query param
+            product = Product.objects.get(pk=id)
+            # 3 - Adds the cart using related objects
+            product.cart.add(cart)
+            
+            return redirect('app:cart', cart.id)
+    return redirect('app:login')
