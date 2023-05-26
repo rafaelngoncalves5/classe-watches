@@ -40,5 +40,5 @@ urlpatterns = [
     
     # Shipping
     path('payment/shipping', views.ShippingView.as_view(), name='shipping'),
-    # path('payment/checkout', views.Checkou)
+    path('payment/checkout', views.CheckoutView.as_view(), name='checkout')
 ]

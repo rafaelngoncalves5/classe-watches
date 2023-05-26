@@ -15,7 +15,7 @@
     <h1 class="display-4 text-center fw-bolder mb-5">Dados de envio</h1>
 
 
-    <form method="post" action="" class="row container p-5 d-grid">
+    <form method="post" action="{% url 'app:checkout' %}" class="row container p-5 d-grid">
         {% csrf_token %}
         {{ form.as_table }}
 

@@ -1,19 +1,27 @@
 from typing import Any
 from django.forms.models import BaseModelForm
-from django.http import HttpRequest, HttpResponse, Http404
+from django.http import HttpRequest, HttpResponse, Http404, HttpResponseBadRequest
 from django.views import generic
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.urls import reverse_lazy
-from django import forms
+from django import forms, http
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from . models import Order, Product, Cart
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import password_validation
+import requests
+from django.core import serializers
 
 # Validators
 from django.core.exceptions import ValidationError
+
+
+# SDK do Mercado Pago
+import mercadopago
+# Adicione as credenciais
+sdk = mercadopago.SDK("TEST-6033284383326765-042517-f71f881b0fdb00736ff2f02a4c8360ac-472353305")
 
 # Create your views here.
 class IndexView(generic.TemplateView):
@@ -200,9 +208,9 @@ def add_to_cart(request, id):
             cart: Cart = get_object_or_404(Cart, pk=request.user.cart.id)
             # 2 - Grabs a product id, via query param
             product = Product.objects.get(pk=id)
-            # 3 - Adds the cart using related objects
-            product.cart.add(cart)
-            
+            # 3 - Adds the cart using related objects, if the quantity id >= 1
+            if product.quantity >= 1:
+                product.cart.add(cart)
             return redirect('app:cart', cart.id)
     return redirect('app:login')
 
@@ -229,3 +237,58 @@ class ShippingView(LoginRequiredMixin, generic.FormView):
     login_url = reverse_lazy('app:login')
     template_name = 'app/payment/shipping.html'
     form_class = ShippingForm
+    #success_url = reverse_lazy('app:success')
+
+class CheckoutView(LoginRequiredMixin, generic.View):
+    login_url = reverse_lazy('app:login')
+    success_url = reverse_lazy('app:success')    
+
+    def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+        raise Http404
+           
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
+
+        # Verifies if the products are available
+        total = 0
+        products_list: list = [{}]
+
+        cart = Cart.objects.get(pk=self.request.user.id)
+
+        for product in cart.product_set.all():
+            if product.quantity <= 0:
+                cart.product_set.clear()
+                # Try again later
+                raise HttpResponseBadRequest
+            else:
+                total += product.price
+                products_list.append({
+                    'title': product.title,
+                    'quantity': 1,
+                    'unit_price': product.price,
+                    'picture_url': product.image_cover.url
+                })
+            total = float("{:.2f}".format(total))
+        
+        print(products_list)
+        print(total)
+
+        # 1 - Generates an Order
+        data = request.POST
+
+
+        # 2 - Generates the checkout page
+        preference_data = {
+            "items": [
+                {
+                    "title": "My Item",
+                    "quantity": 1,
+                    "unit_price": 75.76
+                }
+            ],
+            
+        }
+
+        preference_response = sdk.preference().create(preference_data)
+        preference = preference_response["response"]
+        preference_id = preference['id']
+        return HttpResponse('')
