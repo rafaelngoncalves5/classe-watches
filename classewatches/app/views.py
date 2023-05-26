@@ -46,7 +46,7 @@ class SignUpView(generic.CreateView):
     template_name = 'app/auth/signup.html'
     model = User
     context_object_name = 'User'
-    success_url = reverse_lazy('app:success')
+    success_url = reverse_lazy('app:login')
     form_class = SignUpForm
 
     def form_valid(self, form: BaseModelForm) -> HttpResponse:
@@ -54,8 +54,10 @@ class SignUpView(generic.CreateView):
         # Removing error prone data from form
         form.cleaned_data.pop('email2', None)
         form.cleaned_data.pop('password2', None)
+        # Change password 1 to password to avoid key error
+        password = form.cleaned_data['password1']
         form.cleaned_data.pop('password1', None)
-        form.cleaned_data.pop('password', None)
+        form.cleaned_data['password'] = password
 
         new_user = User.objects.create_user(**form.cleaned_data)
         new_cart = Cart.objects.create(user=new_user)
