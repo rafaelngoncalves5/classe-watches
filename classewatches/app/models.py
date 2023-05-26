@@ -52,7 +52,7 @@ class Order(models.Model):
     street = models.CharField(max_length=25, verbose_name="Rua")
     street_number = models.IntegerField(verbose_name="Número da rua")
     complement = models.CharField(max_length=150, null=True, verbose_name="Complemento")
-    cep = models.CharField(verbose_name="CEP", max_length=150)
+    postal_code = models.CharField(verbose_name="CEP", max_length=150)
     status = models.CharField(choices=STATUS_ENUM, verbose_name="Status", default=STATUS_ENUM[0][1], max_length=25)
     tracking_link = models.URLField(verbose_name="Link de rastreamento", null=True)
 

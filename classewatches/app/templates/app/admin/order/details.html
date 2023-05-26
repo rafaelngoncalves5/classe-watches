@@ -17,6 +17,19 @@
     <ul class="list-group text-center list-group-flush">
         <li class="list-group-item"><span class="fw-bold">Data</span> - {{ Order }}</li>
         <li class="list-group-item"><span class="fw-bold">Id</span> - {{ Order.id }}</li>
+
+        {# Products #}
+        <li class="list-group-item text-center fw-bold">Produtos comprados</li>
+        {% for product in Order.products.all %}
+        <div class="border d-flex flex-row justify-content-between align-items-center p-2 bg-white px-3 rounded">
+            <div class="mr-1"><img class="rounded" src="{{ product.image_cover.url }}" width="70"></div>
+            <p>{{ product.title }}</p>
+            <div>
+                <h5 class="text-grey">{{ product.price }}</h5>
+            </div>
+        </div>
+        {% endfor %}
+
         <li class="list-group-item"><span class="fw-bold">Total</span> - R$ {{ Order.total }}</li>
         <li class="list-group-item"><span class="fw-bold">Telefone</span> - {{ Order.phone_number }}</li>
         <li class="list-group-item"><span class="fw-bold">Telefone 2</span> - {{ Order.phone_number2 }}</li>
@@ -34,9 +47,10 @@
         <li class="list-group-item"><span class="fw-bold">Complemento</span> - {{ Order.complement }}</li>
         <li class="list-group-item"><span class="fw-bold">CEP</span> - {{ Order.postal_code }}</li>
         <li class="list-group-item"><span class="fw-bold">Status do pedido</span> - {{ Order.status }}</li>
-        <li class="list-group-item"><span class="fw-bold">Link de rastreamneto</span> - <a href="{{ order.tracking_link }}" class="stretched-link">
-            <p class="text-truncate text-wrap">{{ Order.tracking_link }}</p>
-        </a></li>
+        <li class="list-group-item"><span class="fw-bold">Link de rastreamneto</span> - <a
+                href="{{ order.tracking_link }}" class="stretched-link">
+                <p class="text-truncate text-wrap">{{ Order.tracking_link }}</p>
+            </a></li>
 
     </ul>
 

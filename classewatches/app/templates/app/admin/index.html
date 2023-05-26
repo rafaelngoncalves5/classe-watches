@@ -16,7 +16,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
     </h1>
     <p class="text-center lead">Bem vindo</p>
 
-    <section class="container">
+    <section class="container-fluid">
 
         {# Order model #}
         <div class="row d-flex justify-content-center bg-light my-5 card p-3">
@@ -27,7 +27,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
             <details>
                 <summary>Ver mais</summary>
 
-                <ul class="list-group">
+                <ul class="list-group list-group-horizontal flex-wrap">
                     {% for order in Order %}
                     <li class="list-group-item">
                         <small class="text-wrap fw-lighter">{{ order }}</small>
@@ -50,7 +50,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
             <details>
                 <summary>Ver mais</summary>
 
-                <ul class="list-group">
+                <ul class="list-group list-group-horizontal flex-wrap">
                     {% for product in Product %}
                     <li class="list-group-item">
                         <small class="text-wrap fw-lighter">{{ product }}</small>

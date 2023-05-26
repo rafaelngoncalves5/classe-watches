@@ -206,3 +206,8 @@ def remove_from_cart(request, id):
             
             return redirect('app:cart', cart.id)
     return redirect('app:login')
+
+# Shipping
+class ShippingView(LoginRequiredMixin, generic.TemplateView):
+    login_url = reverse_lazy('app:login')
+    template_name = 'app/payment/shipping.html'
