@@ -56,7 +56,7 @@ class Order(models.Model):
     complement = models.CharField(max_length=150, null=True, verbose_name="Complemento")
     postal_code = models.CharField(verbose_name="CEP", max_length=150)
     status = models.CharField(choices=STATUS_ENUM, verbose_name="Status", default=STATUS_ENUM[0][1], max_length=25)
-    tracking_link = models.URLField(verbose_name="Link de rastreamento", null=True)
+    tracking_link = models.URLField(verbose_name="Link de rastreamento", null=True, default="Não despachado")
 
     def __str__(self):
         return str(f"Pedido feito na data de {self.order_date.day}/{self.order_date.month}/{self.order_date.year}")

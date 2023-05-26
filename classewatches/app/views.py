@@ -250,7 +250,7 @@ class CheckoutView(LoginRequiredMixin, generic.View):
 
         # Verifies if the products are available
         total = 0
-        products_list: list = [{}]
+        products_list: list = []
 
         cart = Cart.objects.get(pk=self.request.user.id)
 
@@ -268,27 +268,54 @@ class CheckoutView(LoginRequiredMixin, generic.View):
                     'picture_url': product.image_cover.url
                 })
             total = float("{:.2f}".format(total))
-        
-        print(products_list)
-        print(total)
 
-        # 1 - Generates an Order
         data = request.POST
 
-
-        # 2 - Generates the checkout page
+        # 1 - Generates the checkout page
         preference_data = {
-            "items": [
-                {
-                    "title": "My Item",
-                    "quantity": 1,
-                    "unit_price": 75.76
+            "items": products_list,
+            "shipments": {
+                "receiver_address": {
+                    "zip_code": data['postal_code'],
+                    "street_name": data['street'],
+                    # Place to insert "city_name"
+                    "state_name": data["state"],
+                    "street_number": data["street_number"],
+                    # Place to insert "floor"
                 }
-            ],
-            
+            }
         }
 
         preference_response = sdk.preference().create(preference_data)
         preference = preference_response["response"]
-        preference_id = preference['id']
-        return HttpResponse('')
+
+        # 2 - Generates an Order
+        new_order = Order.objects.create(
+            id=preference['id'],
+            total=total,
+            cart=cart,
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            phone_number=data['phone_number'],
+            phone_number2=data['phone_number2'],
+            state=data['state'],
+            district=data['district'],
+            street=data['street'],
+            street_number=data['street_number'],
+            complement=data['complement'],
+            postal_code=data['postal_code']
+        )
+
+        # 3 - Reduces the quantity, adds in the order and clean the cart
+        for product in cart.product_set.all():
+            new_order.products.add(product)
+            product.quantity -= 1
+            product.save()
+
+            if product.quantity <= 0:
+                cart.product_set.remove(product)
+
+        # 4 - Sends an email
+        # ...
+
+        return redirect(preference['init_point'])
