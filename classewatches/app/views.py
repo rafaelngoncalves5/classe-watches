@@ -1,4 +1,5 @@
 from typing import Any
+from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse
 from django.views import generic
 from django.contrib.auth.models import User
@@ -47,6 +48,18 @@ class SignUpView(generic.CreateView):
     context_object_name = 'User'
     success_url = reverse_lazy('app:success')
     form_class = SignUpForm
+
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        print(form.cleaned_data)
+        # Removing error prone data from form
+        form.cleaned_data.pop('email2', None)
+        form.cleaned_data.pop('password2', None)
+        form.cleaned_data.pop('password1', None)
+        form.cleaned_data.pop('password', None)
+
+        new_user = User.objects.create_user(**form.cleaned_data)
+        new_cart = Cart.objects.create(user=new_user)
+        return redirect('app:success')
 
 class LoginView(LoginView):
     template_name = 'app/auth/login.html'
@@ -146,3 +159,14 @@ class ProductsDetailsView(generic.DetailView):
     model = Product
     context_object_name = 'Product'
     template_name = 'app/products/details.html'
+
+# Cart
+class CartView(LoginRequiredMixin, generic.DetailView):
+    login_url = reverse_lazy('app:login')
+    template_name = 'app/cart/index.html'
+    model = Cart
+    context_object_name = 'Cart'
+
+def add_to_cart(request):
+    if request.method == 'POST':
+        pass

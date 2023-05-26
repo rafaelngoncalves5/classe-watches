@@ -29,4 +29,7 @@ urlpatterns = [
     path('products', views.ProductsView.as_view(), name='products'),
     path('products/details/<int:pk>', views.ProductsDetailsView.as_view(), name='product_details'),
     
+    # Cart
+    path('cart/<int:pk>', views.CartView.as_view(), name='cart'),
+
 ]

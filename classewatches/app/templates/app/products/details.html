@@ -12,12 +12,12 @@
 {% include 'back.html' %}
 
 <main class="container">
-    <div class="container text-center bg-light card col-lg-8 shadow-lg">
+    <div class="container text-center col-lg-8">
         <div class="row p-2">
             {# Carouse #}
             <div class="col-sm-5 col-md-6 mt-2">
                 <div id="carouselExample" class="carousel slide">
-                    <div class="carousel-inner">
+                    <div class="carousel-inner shadow-lg">
                         <div class="carousel-item active">
                             <img src="{{ Product.image_cover.url }}" class="img-fluid rounded"
                                 alt="{{ Product.title }}">
@@ -41,14 +41,14 @@
                     </button>
                 </div>
             </div>
-            <div class="mt-2 col-sm-5 offset-sm-2 col-md-6 offset-md-0 card bg-dark text-light">
-                <h1 class="fs-5 text-truncate text-wrap lead fw-light text-light p-2">{{ Product.title }}</h1>
+            <div class="mt-2 col-sm-5 offset-sm-2 col-md-6 offset-md-0 card bg-light text-dark">
+                <h1 class="fs-5 text-truncate text-wrap lead fw-light text-dark p-2 border-bottom">{{ Product.title }}</h1>
                 <div class="my-2">
-                    <p class="fw-lighter lead text-secondary text-wrap mt-5">{{ Product.description }}</p>
-                    <p class="fw-lighter lead text-light text-wrap">R$ {{ Product.price }}</p>
-                    <p class="bg-dark fw-bold lead text-success text-wrap mt-5">Disponível</p>
+                    <p class="fw-lighter lead text-dark text-wrap mt-5">{{ Product.description }}</p>
+                    <p class="fw-lighter lead text-dark text-wrap">R$ {{ Product.price }}</p>
+                    <p class="fw-bold lead text-success text-wrap mt-5">Disponível</p>
                 </div>
-                <button class="mt-4 mb-3 text-light btn-outline-dark rounded-2 btn btn-lg">
+                <button class="mt-4 mb-3 text-primary btn-outline-light rounded-2 btn btn-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
                         class="bi bi-cart-fill" viewBox="0 0 16 16">
                         <path

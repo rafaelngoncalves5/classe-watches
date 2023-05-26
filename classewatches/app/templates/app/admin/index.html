@@ -8,6 +8,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
 
 {% block content %}
 {% include 'back.html' %}
+{% include 'logout.html' %}
 
 <main class="container-fluid">
     <h1 class="display-4 text-center fw-bolder mb-5">Olá administrador, <strong>{{ request.user.username|capfirst }}
@@ -98,7 +99,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
             <div class="d-flex justify-content-end">
                 <a href="{% url 'app:signup' %}" class="btn btn-sm btn-link text-info fw-bold">Criar</a>
             </div>
-            <h2 class="text-center fw-bold">Usuário</h2>
+            <h2 class="text-center fw-bold">Usuários</h2>
             <details>
                 <summary>Ver mais</summary>
 
