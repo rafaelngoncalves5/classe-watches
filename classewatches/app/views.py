@@ -124,7 +124,7 @@ class DeleteProductView(SuperUserRequiredMixin, generic.DeleteView):
     model = Product
     success_url = reverse_lazy('app:success')
 
-# User
+# Users
 class UpdateUserForm(UserChangeForm):
     class Meta:
         model = User
@@ -142,12 +142,19 @@ class DeleteUserView(SuperUserRequiredMixin, generic.DeleteView):
     model = User
     success_url = reverse_lazy('app:success')
 
+# Orders
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['id', 'cart', 'total', 'order_date', 'phone_number', 'phone_number2', 'state', 'district', 'street', 'street_number', 'complement', 'cep', 'status', 'tracking_link']
+
 class OrderCreateView(SuperUserRequiredMixin, generic.CreateView):
     login_url = reverse_lazy('app:login')
     model = Order
     success_url = reverse_lazy('app:success')
     template_name = 'app/admin/order/create.html'
-    fields = ['id', 'cart', 'total', 'order_date', 'phone_number', 'phone_number2', 'state', 'district', 'street', 'street_number', 'complement', 'cep', 'status', 'tracking_link']
+    form_class = OrderForm
+    #fields = ['id', 'cart', 'products', 'total', 'order_date', 'phone_number', 'phone_number2', 'state', 'district', 'street', 'street_number', 'complement', 'cep', 'status', 'tracking_link']
 
 class OrderUpdateView(SuperUserRequiredMixin, generic.UpdateView):
     login_url = reverse_lazy('app:login')
@@ -162,7 +169,7 @@ class OrderDetailsView(SuperUserRequiredMixin, generic.DetailView):
     model = Order
     context_object_name = 'Order'
 
-# Products
+# Products 2
 class ProductsView(generic.ListView):
     queryset = Product.objects.all().order_by('-price')
     context_object_name = 'Product'

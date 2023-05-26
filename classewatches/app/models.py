@@ -7,11 +7,31 @@ class Cart(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Usuário")
     total = models.FloatField(default=0.00, verbose_name="Total")
-    billing = models.FloatField(default=0.00, verbose_name="Frete")
+    shipping = models.FloatField(default=0.00, verbose_name="Frete")
 
     def __str__(self):
         return str("Carrinho pertence ao usuário {0}, e tem um id {1}!".format(self.user.username, self.id))
-    
+
+class Product(models.Model):
+    id = models.AutoField(primary_key=True)
+
+    # Many-to-many
+    cart = models.ManyToManyField(Cart, editable=False, verbose_name="Carrinho")
+
+    title = models.CharField(max_length=25, verbose_name="Título")
+    description = models.CharField(max_length=150, verbose_name="Descrição")
+    price = models.FloatField(default=0.00, verbose_name="Preço")
+    quantity = models.IntegerField(default=1, verbose_name="Quantidade")
+
+    # Images
+    image_cover = models.FileField(upload_to='static/', verbose_name="Imagem de capa", help_text="Por favor, tire a foto na vertical.")
+    image2 = models.FileField(upload_to='static/', verbose_name="Imagem 2", help_text="Por favor, tire a foto na vertical.")
+    image3 = models.FileField(upload_to='static', verbose_name="Imagem 3", help_text="Por favor, tire a foto na vertical.")
+
+    def __str__(self):
+        return str("Produto {0} tem id {1}, temos {2} unidade(s) em estoque. O produto custa R$ {3}!".format(self.title, self.id, self.quantity, self.price))
+
+
 class Order(models.Model):
      
     STATUS_ENUM = [
@@ -22,6 +42,7 @@ class Order(models.Model):
     
     id = models.SlugField(max_length=900, primary_key=True, null=False)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, verbose_name="Carrinho")
+    products = models.ManyToManyField(Product, verbose_name="Produtos")
     total = models.FloatField(default=0.00, verbose_name="Total")
     order_date = models.DateField(default=timezone.now, auto_now_add=False, verbose_name="Data do pedido")
     phone_number = models.CharField(max_length=14, verbose_name="Telefone")
@@ -37,23 +58,3 @@ class Order(models.Model):
 
     def __str__(self):
         return str(f"Pedido feito na data de {self.order_date.day}/{self.order_date.month}/{self.order_date.year}")
-
-class Product(models.Model):
-    id = models.AutoField(primary_key=True)
-
-    # Many-to-many
-    cart = models.ManyToManyField(Cart, editable=False, verbose_name="Carrinho")
-    order = models.ManyToManyField(Order, editable=False, verbose_name="Pedido")
-
-    title = models.CharField(max_length=25, verbose_name="Título")
-    description = models.CharField(max_length=150, verbose_name="Descrição")
-    price = models.FloatField(default=0.00, verbose_name="Preço")
-    quantity = models.IntegerField(default=1, verbose_name="Quantidade")
-
-    # Images
-    image_cover = models.FileField(upload_to='static/', verbose_name="Imagem de capa", help_text="Por favor, tire a foto na vertical.")
-    image2 = models.FileField(upload_to='static/', verbose_name="Imagem 2", help_text="Por favor, tire a foto na vertical.")
-    image3 = models.FileField(upload_to='static', verbose_name="Imagem 3", help_text="Por favor, tire a foto na vertical.")
-
-    def __str__(self):
-        return str("Produto {0} tem id {1}, temos {2} unidade(s) em estoque. O produto custa R$ {3}!".format(self.title, self.id, self.quantity, self.price))
