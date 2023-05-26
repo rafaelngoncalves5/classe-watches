@@ -20,7 +20,9 @@
                     <div>
                         <h5 class="text-grey">{{ product.price }}</h5>
                     </div>
-                    <form method="post" class="d-flex align-items-center">
+                    <form method="post" action="{% url 'app:remove_from_cart' product.id %}"
+                        class="d-flex align-items-center">
+                        {% csrf_token %}
                         <button type="submit" class="btn btn-link text-danger">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-trash3" viewBox="0 0 16 16">
@@ -40,8 +42,10 @@
         <p class="lead text-center fs-6 my-5">Quer encomendar algo? Me contate!</p>
     </div>
     {% endfor %}
-    <div class="bg-white d-flex justify-content-end flex-row align-items-center mt-3 p-2"><button
+    {% if not Cart.product_set.count <= 0 %} <div
+        class="bg-white d-flex justify-content-end flex-row align-items-center mt-3 p-2"><button
             class="btn btn-block btn-lg ml-2 bg-dark text-light" type="button">Pagamento</button>
-    </div>
+        </div>
+    {% endif %}
 </main>
 {% endblock content %}

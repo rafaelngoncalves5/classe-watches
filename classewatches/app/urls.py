@@ -32,4 +32,6 @@ urlpatterns = [
     # Cart
     path('cart/<int:pk>', views.CartView.as_view(), name='cart'),
     path('cart/add/<int:id>', views.add_to_cart, name='add_to_cart'),
+    path('cart/remove/<int:id>', views.remove_from_cart, name='remove_from_cart'),
+    
 ]

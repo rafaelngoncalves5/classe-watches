@@ -179,3 +179,16 @@ def add_to_cart(request, id):
             
             return redirect('app:cart', cart.id)
     return redirect('app:login')
+
+def remove_from_cart(request, id):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            # 1 - Grabs the cart
+            cart: Cart = get_object_or_404(Cart, pk=request.user.cart.id)
+            # 2 - Grabs a product id, via query param
+            product = Product.objects.get(pk=id)
+            # 3 - Removes the cart using related objects
+            product.cart.remove(cart)
+            
+            return redirect('app:cart', cart.id)
+    return redirect('app:login')

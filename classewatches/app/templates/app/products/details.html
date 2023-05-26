@@ -17,7 +17,7 @@
             {# Carouse #}
             <div class="col-sm-5 col-md-6 mt-2">
                 <div id="carouselExample" class="carousel slide">
-                    <div class="carousel-inner shadow-lg">
+                    <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img src="{{ Product.image_cover.url }}" class="img-fluid rounded"
                                 alt="{{ Product.title }}">
@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="mt-2 col-sm-5 offset-sm-2 col-md-6 offset-md-0 card bg-light text-dark">
-                <h1 class="fs-5 text-truncate text-wrap lead fw-light text-dark p-2 border-bottom">{{ Product.title }}
+                <h1 class="fs-5 fw-bold text-truncate text-wrap lead fw-light text-dark p-2 border-bottom">{{ Product.title }}
                 </h1>
                 <div class="my-2">
                     <p class="fw-lighter lead text-dark text-wrap mt-5">{{ Product.description }}</p>
