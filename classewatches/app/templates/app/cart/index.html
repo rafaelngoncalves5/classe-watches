@@ -18,7 +18,7 @@
                 <div class="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded">
                     <div class="mr-1"><img class="rounded" src="{{ product.image_cover.url }}" width="70"></div>
                     <div>
-                        <h5 class="text-grey">{{ product.price }}</h5>
+                        <h5 class="text-grey">R$ {{ product.price }}</h5>
                     </div>
                     <form method="post" action="{% url 'app:remove_from_cart' product.id %}"
                         class="d-flex align-items-center">
@@ -42,10 +42,10 @@
         <p class="lead text-center fs-6 my-5">Quer encomendar algo? Me contate!</p>
     </div>
     {% endfor %}
-    {% if not Cart.product_set.count <= 0 %} <div
-        class="bg-white d-flex justify-content-end flex-row align-items-center mt-3 p-2"><button
-            class="btn btn-block btn-lg ml-2 bg-dark text-light" type="button">Pagamento</button>
-        </div>
+    {% if not Cart.product_set.count <= 0 %}
+    <div class="bg-white d-flex justify-content-end flex-row align-items-center mt-3 p-2">
+        <button class="btn btn-block btn-lg ml-2 bg-dark text-light" type="button">Pagamento</button>
+    </div>
     {% endif %}
 </main>
 {% endblock content %}

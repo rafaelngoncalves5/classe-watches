@@ -26,7 +26,8 @@
         <li class="list-group-item text-truncate">Data do pedido: <strong>{{ order.order_date }}</strong></li>
         
         {# Products #}
-        {% for product in order.product_set.all %}
+        <li class="list-group-item text-center fw-bold">Produtos comprados</li>
+        {% for product in order.products.all %}
         <div class="border d-flex flex-row justify-content-between align-items-center p-2 bg-white px-3 rounded">
             <div class="mr-1"><img class="rounded" src="{{ product.image_cover.url }}" width="70"></div>
             <p>{{ product.title }}</p>
