@@ -181,6 +181,18 @@ class CartView(LoginRequiredMixin, generic.DetailView):
     model = Cart
     context_object_name = 'Cart'
 
+    def get_context_data(self, **kwargs):
+        cart = Cart.objects.get(pk=self.kwargs['pk'])
+        total: int = 0
+        for product in cart.product_set.all():
+            total += product.price
+
+        context = {
+            'Cart': cart,
+            'total': float("{:.2f}".format(total))
+        }
+        return context
+
 def add_to_cart(request, id):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -208,6 +220,12 @@ def remove_from_cart(request, id):
     return redirect('app:login')
 
 # Shipping
-class ShippingView(LoginRequiredMixin, generic.TemplateView):
+class ShippingForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['first_name', 'last_name', 'phone_number', 'phone_number2', 'state', 'district', 'street', 'street_number', 'complement', 'postal_code']
+
+class ShippingView(LoginRequiredMixin, generic.FormView):
     login_url = reverse_lazy('app:login')
     template_name = 'app/payment/shipping.html'
+    form_class = ShippingForm
