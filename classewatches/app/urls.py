@@ -16,10 +16,14 @@ urlpatterns = [
     # User
     path('user/admin/update/<int:pk>', views.UpdateUserView.as_view(), name='update_user'),
     path('user/admin/delete/<int:pk>', views.DeleteUserView.as_view(), name='delete_user'),
+    path('user', views.UserView.as_view(), name='user'),
+    
+
     # Order
     path('user/admin/order/update/<slug:pk>', views.OrderUpdateView.as_view(), name='update_order'),
     path('user/admin/order/details/<slug:pk>', views.OrderDetailsView.as_view(), name='details_order'),
     path('user/admin/order/create', views.OrderCreateView.as_view(), name='create_order'),
+    
     # Products
     path('user/admin/products/create', views.CreateProductView.as_view(), name='create_product'),
     path('user/admin/products/update/<int:pk>', views.UpdateProductView.as_view(), name='update_product'),

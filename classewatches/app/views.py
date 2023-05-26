@@ -81,11 +81,22 @@ class AdminView(SuperUserRequiredMixin, generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = {
-            'Order': Order.objects.all().order_by('order_date'),
-            'Product': Product.objects.all().order_by('-quantity'),
+            'Order': Order.objects.all().order_by('-order_date'),
+            'Product': Product.objects.all().order_by('quantity'),
             'User': User.objects.all(),
         }
 
+        return context
+    
+class UserView(LoginRequiredMixin, generic.TemplateView):
+    login_url = reverse_lazy('app:login')
+    template_name = 'app/user/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = {
+            'User': self.request.user,
+            'Orders': Order.objects.filter(cart=self.request.user.cart).order_by('-order_date')[:5]
+        }
         return context
     
 # Products

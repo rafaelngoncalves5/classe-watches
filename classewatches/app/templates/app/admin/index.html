@@ -11,6 +11,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
 {% include 'logout.html' %}
 
 <main class="container-fluid">
+    <a href={% url 'app:user' %} class="btn btn-link d-block mx-auto p-2">Meu usuário</a>
     <h1 class="display-4 text-center fw-bolder mb-5">Olá administrador, <strong>{{ request.user.username|capfirst }}
     </h1>
     <p class="text-center lead">Bem vindo</p>

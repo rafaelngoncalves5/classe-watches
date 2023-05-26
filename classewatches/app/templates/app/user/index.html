@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %} - {{ User.username}} {% endblock title %}
+
+{% block content %}
+{% include 'back.html' %}
+{% include 'logout.html' %}
+
+<main class="container">
+    <h1 class="display-5 text-center fw-bold">Meus dados</h1>
+
+    <ul class="col-lg-6 col-md-8 col-sm-10 d-block mx-auto my-5 list-group d-flex justify-content-center text-center">
+        <li class="list-group-item active">Nome de usuário: <strong>{{ User.username }}</strong></li>
+        <li class="list-group-item">Nome completo: <strong>{{ User.first_name }} {{ User.last_name }}</strong></li>
+        <li class="list-group-item text-truncate">Email: <strong>{{ User.email }}</strong></li>
+        <li class="list-group-item text-truncate">Data de cadastrado: <strong>{{ User.date_joined }}</strong></li>
+    </ul>
+
+    <hr>
+
+    <h1 class="display-5 text-center fw-bold my-5">Meus Pedidos</h1>
+    {% for order in Orders %}
+    <ul class="row col-lg-6 col-md-8 col-sm-10 d-block mx-auto my-5 list-group d-flex justify-content-center text-center">
+        <li class="list-group-item active text-wrap">Id do pedido: <strong>{{ order.id }}</strong></li>
+        <li class="list-group-item text-truncate">Total do pedido: R$ <strong>{{ order.total }}</strong></li>
+        <li class="list-group-item text-truncate">Data do pedido: <strong>{{ order.order_date }}</strong></li>
+        <li class="list-group-item text-truncate">Telefone(s): <strong>{{ order.phone_number }}</strong> / <strong>{{ order.phone_number2 }}</strong></li>
+        <li class="list-group-item list-group-item-secondary active text-truncate">CEP (endereço): <strong>{{ order.postal_code }}</strong></li>
+        <li class="list-group-item list-group-item-secondary text-truncate">Estado: <strong>{{ order.state }}</strong></li>
+        <li class="list-group-item list-group-item-secondary text-truncate">Bairro: <strong>{{ order.district }}</strong></li>
+        <li class="list-group-item list-group-item-secondary text-truncate">Rua: <strong>{{ order.street }}</strong></li>
+        <li class="list-group-item list-group-item-secondary text-truncate">Complemento: <strong>{{ order.complement }}</strong></li>
+        <li class="list-group-item list-group-item-secondary text-truncate">Status do pedido: <strong>{{ order.status }}</strong></li>
+        <li class="list-group-item list-group-item-secondary text-truncate">Link de rastreamento: <a target="_blank" class="link" href="{{ order.tracking_link }}">{{ order.tracking_link }}</a></li>
+    </ul>
+    {% empty %}
+    <div>
+        <h1 class="text-center fs-6 fw-bold">Você ainda não fez pedidos...</h1>
+        <p class="lead text-center fs-6 my-5">Quer encomendar algo? Me contate!</p>
+    </div>
+    {% endfor %}
+</main>
+
+{% endblock content %}
