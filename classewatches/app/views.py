@@ -1,5 +1,6 @@
 from typing import Any
-from django.http import HttpRequest, HttpResponse
+from django.forms.models import BaseModelForm
+from django.http import HttpRequest, HttpResponse, Http404
 from django.views import generic
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
@@ -8,7 +9,7 @@ from django import forms
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from . models import Order, Product, Cart
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import password_validation
 
 # Validators
@@ -47,6 +48,18 @@ class SignUpView(generic.CreateView):
     context_object_name = 'User'
     success_url = reverse_lazy('app:success')
     form_class = SignUpForm
+
+    def form_valid(self, form: BaseModelForm) -> HttpResponse:
+        print(form.cleaned_data)
+        # Removing error prone data from form
+        form.cleaned_data.pop('email2', None)
+        form.cleaned_data.pop('password2', None)
+        form.cleaned_data.pop('password1', None)
+        form.cleaned_data.pop('password', None)
+
+        new_user = User.objects.create_user(**form.cleaned_data)
+        new_cart = Cart.objects.create(user=new_user)
+        return redirect('app:success')
 
 class LoginView(LoginView):
     template_name = 'app/auth/login.html'
@@ -146,3 +159,36 @@ class ProductsDetailsView(generic.DetailView):
     model = Product
     context_object_name = 'Product'
     template_name = 'app/products/details.html'
+
+# Cart
+class CartView(LoginRequiredMixin, generic.DetailView):
+    login_url = reverse_lazy('app:login')
+    template_name = 'app/cart/index.html'
+    model = Cart
+    context_object_name = 'Cart'
+
+def add_to_cart(request, id):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            # 1 - Grabs the cart
+            cart: Cart = get_object_or_404(Cart, pk=request.user.cart.id)
+            # 2 - Grabs a product id, via query param
+            product = Product.objects.get(pk=id)
+            # 3 - Adds the cart using related objects
+            product.cart.add(cart)
+            
+            return redirect('app:cart', cart.id)
+    return redirect('app:login')
+
+def remove_from_cart(request, id):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            # 1 - Grabs the cart
+            cart: Cart = get_object_or_404(Cart, pk=request.user.cart.id)
+            # 2 - Grabs a product id, via query param
+            product = Product.objects.get(pk=id)
+            # 3 - Removes the cart using related objects
+            product.cart.remove(cart)
+            
+            return redirect('app:cart', cart.id)
+    return redirect('app:login')

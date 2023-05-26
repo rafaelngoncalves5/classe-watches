@@ -5,7 +5,7 @@ from django.utils import timezone
 # Create your models here.
 class Cart(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuário")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name="Usuário")
     total = models.FloatField(default=0.00, verbose_name="Total")
     billing = models.FloatField(default=0.00, verbose_name="Frete")
 

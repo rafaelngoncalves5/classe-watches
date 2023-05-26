@@ -18,7 +18,10 @@
                     <p class="text-truncate text-body-secondary fw-lighter">{{ product.description }}</p>
                     <hr />
                     <span class="fs-4 fw-bold text-success">R$ {{ product.price }}</span>
-                    <button class="btn btn-dark mt-3 lead w-100 text-light">Guardar</button>
+                    <form method="post" action="{% url 'app:add_to_cart' product.id %}">
+                        {% csrf_token %}
+                        <button type="post" class="btn btn-dark mt-3 lead w-100 text-light">Guardar</button>
+                    </form>
                 </div>
             </a>
         </div>
