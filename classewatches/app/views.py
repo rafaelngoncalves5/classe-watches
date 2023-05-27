@@ -232,7 +232,7 @@ def remove_from_cart(request, id):
 class ShippingForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'phone_number', 'phone_number2', 'state', 'district', 'street', 'street_number', 'complement', 'postal_code']
+        fields = ['first_name', 'last_name', 'phone_number', 'phone_number2', 'city', 'state', 'district', 'street', 'street_number', 'apartment', 'floor', 'complement', 'postal_code']
 
 class ShippingView(LoginRequiredMixin, generic.FormView):
     login_url = reverse_lazy('app:login')
@@ -279,10 +279,11 @@ class CheckoutView(LoginRequiredMixin, generic.View):
                 "receiver_address": {
                     "zip_code": data['postal_code'],
                     "street_name": data['street'],
-                    # Place to insert "city_name"
+                    "city_name": data['city'],
                     "state_name": data["state"],
                     "street_number": data["street_number"],
-                    # Place to insert "floor"
+                    "apartment": data["apartment"],
+                    "floor": data["floor"],
                 }
             },
         }
@@ -300,9 +301,12 @@ class CheckoutView(LoginRequiredMixin, generic.View):
             phone_number=data['phone_number'],
             phone_number2=data['phone_number2'],
             state=data['state'],
+            city=data['city'],
             district=data['district'],
             street=data['street'],
             street_number=data['street_number'],
+            apartment=data['apartment'],
+            floor=data['floor'],
             complement=data['complement'],
             postal_code=data['postal_code']
         )

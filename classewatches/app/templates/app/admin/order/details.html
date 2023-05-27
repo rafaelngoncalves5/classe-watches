@@ -44,9 +44,12 @@
     {# Dados de entrega #}
     <ul class="list-group text-center list-group-flush">
         <li class="list-group-item"><span class="fw-bold">Estado</span> - {{ Order.state }}</li>
+        <li class="list-group-item"><span class="fw-bold">Cidade</span> - {{ Order.city }}</li>
         <li class="list-group-item"><span class="fw-bold">Bairro</span> - {{ Order.district }}</li>
         <li class="list-group-item"><span class="fw-bold">Rua</span> - {{ Order.street }}</li>
         <li class="list-group-item"><span class="fw-bold">Número da rua</span> - {{ Order.street_number }}</li>
+        <li class="list-group-item"><span class="fw-bold">Residência</span> - {{ Order.apartment }}</li>
+        <li class="list-group-item"><span class="fw-bold">Andar</span> - {{ Order.floor }}</li>
         <li class="list-group-item"><span class="fw-bold">Complemento</span> - {{ Order.complement }}</li>
         <li class="list-group-item"><span class="fw-bold">CEP</span> - {{ Order.postal_code }}</li>
         <li class="list-group-item"><span class="fw-bold">Status do pedido</span> - {{ Order.status }}</li>

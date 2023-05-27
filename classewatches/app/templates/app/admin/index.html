@@ -104,7 +104,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
             <details>
                 <summary>Ver mais</summary>
 
-                <ul class="list-group">
+                <ul class="list-group overflow-scroll">
                     {% for user in User %}
                     <li class="list-group-item">
                         <small class="text-wrap fw-lighter">Usuário {{ user.username|capfirst }}</small>
