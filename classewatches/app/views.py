@@ -104,7 +104,7 @@ class UserView(LoginRequiredMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = {
             'User': self.request.user,
-            'Orders': Order.objects.filter(cart=self.request.user.cart).order_by('-order_date')[:5]
+            'Orders': Order.objects.filter(cart=self.request.user.cart).order_by('order_date')[:5]
         }
         return context
     
