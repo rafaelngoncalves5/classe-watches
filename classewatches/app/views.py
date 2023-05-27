@@ -357,7 +357,7 @@ class ForgotPasswordView(generic.FormView):
         secret = os.getenv('JWT_KEY')
 
         # 1 - Encodes a JWT with expire time = 5 minutes
-        encoded_jwt = jwt.encode({"exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=300)}, os.getenv('JWT_KEY'),)
+        encoded_jwt = jwt.encode({"email": form.cleaned_data['email'], "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=300)}, os.getenv('JWT_KEY'),)
         
         send_mail(
             "Token para troca de senha",
@@ -389,6 +389,34 @@ class TokenView(generic.FormView):
     template_name = 'app/auth/token.html'
     form_class = TokenForm
     success_url = reverse_lazy('app:switch_pass')
+
+class PasswordForm(forms.Form, password_validation.CommonPasswordValidator, password_validation.NumericPasswordValidator):
+    password = forms.CharField(widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Senha")
+    password2 = forms.CharField(widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Confirmação de senha")
     
-class SwitchPasswordView(generic.TemplateView):
+    class Meta:
+        fields = ['password', 'password2']
+
+    def clean(self):
+        form_data = self.cleaned_data
+
+        if form_data['password'] == form_data['password2']:
+            return form_data
+        elif not form_data['password'] == form_data['password2']:
+            raise ValidationError("Senhas não são iguais.")
+        else:
+            raise ValidationError("Senhas não são iguais.")
+    
+class SwitchPasswordView(generic.FormView):
     template_name = 'app/auth/switch_pass.html'
+    form_class = TokenForm
+    success_url = reverse_lazy('app:success')
+
+    def form_valid(self, form: Any) -> HttpResponse:
+        token = form.cleaned_data['token']
+
+        # Decodes token
+        decoded_token = jwt.decode(token, os.getenv('JWT_KEY'), algorithms=["HS256"])
+        email = decoded_token['email']
+
+        return super().form_valid(form)
