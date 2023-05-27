@@ -27,7 +27,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
             <details>
                 <summary>Ver mais</summary>
 
-                <ul class="list-group list-group-horizontal flex-wrap">
+                <ul class="list-group list-group-horizontal flex-wrap overflow-scroll">
                     {% for order in Order %}
                     <li class="list-group-item">
                         <small class="text-wrap fw-lighter">{{ order }}</small>
@@ -35,7 +35,7 @@ Este template vai dar acesso completo as models "User", "Product" e "Order"
                         <div class="btn-group" role="group">
                             <a href="{% url 'app:details_order' order.id %}" class="btn btn-sm btn-warning">Detalhes</a>
                             <a href="{% url 'app:update_order' order.id %}" class="btn btn-sm btn-info">Editar</a>
-                        </li>
+                    </li>
                     {% endfor %}
                 </ul>
             </details>

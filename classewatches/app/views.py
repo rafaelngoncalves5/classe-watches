@@ -13,6 +13,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import password_validation
 import requests
 from django.core import serializers
+import os
 
 # Validators
 from django.core.exceptions import ValidationError
@@ -241,7 +242,7 @@ class ShippingView(LoginRequiredMixin, generic.FormView):
 
 class CheckoutView(LoginRequiredMixin, generic.View):
     login_url = reverse_lazy('app:login')
-    success_url = reverse_lazy('app:success')    
+    success_url = reverse_lazy('app:success')
 
     def get(self, request: HttpRequest, *args: Any, **kwargs: Any) -> HttpResponse:
         raise Http404
@@ -284,11 +285,6 @@ class CheckoutView(LoginRequiredMixin, generic.View):
                     # Place to insert "floor"
                 }
             },
-            "back_urls": {
-                "success": str(reverse_lazy('app:success')),
-                "failure": str(reverse_lazy('app:products')),
-                "pending": str(reverse_lazy('app:success')),
-            }
         }
 
         preference_response = sdk.preference().create(preference_data)
@@ -317,7 +313,7 @@ class CheckoutView(LoginRequiredMixin, generic.View):
             product.quantity -= 1
             product.save()
 
-            if product.quantity <= 0:
+            if product.quantity == 0:
                 cart.product_set.remove(product)
 
         # 4 - Sends an email

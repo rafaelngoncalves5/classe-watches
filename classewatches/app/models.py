@@ -59,4 +59,4 @@ class Order(models.Model):
     tracking_link = models.URLField(verbose_name="Link de rastreamento", null=True, default="Não despachado")
 
     def __str__(self):
-        return str(f"Pedido feito na data de {self.order_date.day}/{self.order_date.month}/{self.order_date.year}")
+        return str(f"Pedido de {self.cart.user.username}, em {self.order_date.day}/{self.order_date.month}/{self.order_date.year}")
