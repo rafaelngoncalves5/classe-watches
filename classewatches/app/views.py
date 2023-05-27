@@ -396,27 +396,31 @@ class PasswordForm(forms.Form, password_validation.CommonPasswordValidator, pass
     
     class Meta:
         fields = ['password', 'password2']
-
-    def clean(self):
-        form_data = self.cleaned_data
-
-        if form_data['password'] == form_data['password2']:
-            return form_data
-        elif not form_data['password'] == form_data['password2']:
-            raise ValidationError("Senhas não são iguais.")
-        else:
-            raise ValidationError("Senhas não são iguais.")
     
 class SwitchPasswordView(generic.FormView):
     template_name = 'app/auth/switch_pass.html'
-    form_class = TokenForm
+    form_class = PasswordForm
     success_url = reverse_lazy('app:success')
+    
 
-    def form_valid(self, form: Any) -> HttpResponse:
-        token = form.cleaned_data['token']
+    def get_context_data(self, form, **kwargs):
+        token = self.request.POST['token']
 
         # Decodes token
         decoded_token = jwt.decode(token, os.getenv('JWT_KEY'), algorithms=["HS256"])
         email = decoded_token['email']
 
-        return super().form_valid(form)
+        context = {
+            'email': email,
+            'form': form
+        }
+        return context
+    
+def change_user_password(request):
+    password = request.POST['password']
+    user: User = User.objects.get(email=request.POST['email'])
+
+    user.set_password(password)
+    user.save()
+
+    return redirect('app:success')

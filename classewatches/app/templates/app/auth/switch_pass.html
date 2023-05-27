@@ -13,10 +13,11 @@
     {% include 'back.html' %}
     <h1 class="fs-2 text-center fw-bolder mb-5">Insira sua nova senha</h1>
 
-    <form method="post" class="row container p-5 w-fit-content">
+    <form action="{% url 'app:change_pass' %}" method="post" class="row container p-5 w-fit-content">
         {% csrf_token %}
 
         {{ form.as_table }}
+        <input name="email" type="hidden" value="{{ email }}" />
 
         <button type="submit" class="btn btn-lg btn-dark my-5">Enviar</button>
     </form>
