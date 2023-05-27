@@ -15,6 +15,9 @@ import requests
 from django.core import serializers
 import os
 from django.core.mail import send_mail
+import jwt
+from django.utils import timezone
+import datetime
 
 # Validators
 from django.core.exceptions import ValidationError
@@ -347,16 +350,45 @@ class EmailForm(forms.Form):
 class ForgotPasswordView(generic.FormView):
     template_name = 'app/auth/forgot_pass.html'
     form_class = EmailForm
-    success_url = reverse_lazy('app:success')
+    success_url = reverse_lazy('app:token')
 
     def form_valid(self, form: Any) -> HttpResponse:
+
+        secret = os.getenv('JWT_KEY')
+
+        # 1 - Encodes a JWT with expire time = 5 minutes
+        encoded_jwt = jwt.encode({"exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=300)}, os.getenv('JWT_KEY'),)
         
         send_mail(
-            "dsdfss3dffdssdsdf",
-            "dssdfsdfsdfsddfs.",
+            "Token para troca de senha",
+            encoded_jwt,
             "rafaelngoncalves5@outlook.com",
             # form.cleaned_data['email']
             ['eso4923a@gmail.com'],
             fail_silently=False,
         )
         return super().form_valid(form)
+
+class TokenForm(forms.Form):
+    token = forms.CharField(max_length=1209, label='Token para troca de senha', help_text="Insira seu token para troca de senha enviado por email")
+
+    def clean_token(self):
+        token = self.cleaned_data.get('token')
+        
+        try:
+            jwt.decode(token, os.getenv('JWT_KEY'), algorithms=["HS256"])
+        except jwt.ExpiredSignatureError:
+            # Signature has expired
+            raise ValidationError("Este token já expirou, ou não existe.")
+        except jwt.exceptions.DecodeError:
+            raise ValidationError("Este token já expirou, ou não existe.")
+
+        return token
+
+class TokenView(generic.FormView):
+    template_name = 'app/auth/token.html'
+    form_class = TokenForm
+    success_url = reverse_lazy('app:switch_pass')
+    
+class SwitchPasswordView(generic.TemplateView):
+    template_name = 'app/auth/switch_pass.html'
