@@ -324,3 +324,29 @@ class CheckoutView(LoginRequiredMixin, generic.View):
         # ...
 
         return redirect(preference['init_point'])
+    
+# Password (forgot and switch)
+class EmailForm(forms.Form):
+    email = forms.EmailField(required=True, widget=forms.EmailInput(), label="Endereço de email:")
+    email2 = forms.EmailField(required=True, widget=forms.EmailInput(), label='Confirmação de email:', help_text='Informe o mesmo email informado anteriormente, para verificação.')
+
+    def clean(self):
+        form_data = self.cleaned_data
+        email_exists = User.objects.filter(email=form_data['email']).exists()
+
+        if form_data['email'] == form_data['email2'] and email_exists:
+            return form_data
+        elif not form_data['email'] == form_data['email2']:
+            raise ValidationError("Emails não são iguais.")
+        elif not email_exists:
+            raise ValidationError("Email não foi cadastrado.")
+    class Meta:
+        fields = ['email', 'email2']
+
+class ForgotPasswordView(generic.FormView):
+    template_name = 'app/auth/forgot_pass.html'
+    form_class = EmailForm
+    success_url = reverse_lazy('app:success')
+
+    def form_valid(self, form: Any) -> HttpResponse:
+        return super().form_valid(form)

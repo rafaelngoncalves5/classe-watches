@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} - Esqueci minha senha{% endblock title %}
+
+{% block extrahead %}
+<link rel="stylesheet" href="{% static 'app/styles/forms.css' %}">
+{% endblock extrahead %}
+
+{% block content %}
+<main class="container">
+    {% include 'back.html' %}
+    <h1 class="fs-2 text-center fw-bolder mb-5">Insira o email para troca de senha</h1>
+
+    <form class="row container p-5 d-grid" method="post" action="{% url 'app:forgot_pass' %}">
+        {% csrf_token %}
+        {{ form.as_table }}
+
+        <button type="submit" class="btn btn-lg btn-dark my-5">Enviar</button>
+    </form>
+</main>
+{% endblock content %}

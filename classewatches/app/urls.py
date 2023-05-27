@@ -10,6 +10,8 @@ urlpatterns = [
     path('auth/signup', views.SignUpView.as_view(), name='signup'),
     path('auth/login', views.LoginView.as_view(), name='login'),
     path('auth/logout', views.LogoutView.as_view(), name='logout'),
+    # Password (forgot and switch)
+    path('auth/password/forgot', views.ForgotPasswordView.as_view(), name='forgot_pass'),
 
     # User and Admin
     path('user/admin', views.AdminView.as_view(), name='admin'),
@@ -17,7 +19,6 @@ urlpatterns = [
     path('user/admin/update/<int:pk>', views.UpdateUserView.as_view(), name='update_user'),
     path('user/admin/delete/<int:pk>', views.DeleteUserView.as_view(), name='delete_user'),
     path('user', views.UserView.as_view(), name='user'),
-    
 
     # Order
     path('user/admin/order/update/<slug:pk>', views.OrderUpdateView.as_view(), name='update_order'),
