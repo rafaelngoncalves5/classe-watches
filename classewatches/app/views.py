@@ -14,6 +14,7 @@ from django.contrib.auth import password_validation
 import requests
 from django.core import serializers
 import os
+from django.core.mail import send_mail
 
 # Validators
 from django.core.exceptions import ValidationError
@@ -349,4 +350,13 @@ class ForgotPasswordView(generic.FormView):
     success_url = reverse_lazy('app:success')
 
     def form_valid(self, form: Any) -> HttpResponse:
+        
+        send_mail(
+            "dsdfss3dffdssdsdf",
+            "dssdfsdfsdfsddfs.",
+            "rafaelngoncalves5@outlook.com",
+            # form.cleaned_data['email']
+            ['eso4923a@gmail.com'],
+            fail_silently=False,
+        )
         return super().form_valid(form)
