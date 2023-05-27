@@ -10,6 +10,7 @@
 <main class="container-fluid d-flex justify-content-center">
     <div class="row col-12 w-fit-content d-flex justify-content-center gap-2">
         {% for product in Product %}
+        {% if product.quantity >= 1 %}
         <div class="shadow-lg p-1 rounded col-lg-3 col-md-4 col-sm-10 col-10 border my-2">
             <a class="text-decoration-none" href="{% url 'app:product_details' product.id %}">
                 <img class="img-fluid border border-5 border-light rounded" src="{{ product.image_cover.url }}" />
@@ -25,6 +26,7 @@
                 </div>
             </a>
         </div>
+        {% endif %}
         {% empty %}
         <div>
             <h1 class="text-center display-6 fw-bold">Nenhum produto disponível</h1>

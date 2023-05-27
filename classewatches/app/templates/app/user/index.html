@@ -41,8 +41,12 @@
         <li class="list-group-item text-truncate">Telefone(s): <strong>{{ order.phone_number }}</strong> / <strong>{{ order.phone_number2 }}</strong></li>
         <li class="list-group-item list-group-item-secondary active text-truncate">CEP (endereço): <strong>{{ order.postal_code }}</strong></li>
         <li class="list-group-item list-group-item-secondary text-truncate">Estado: <strong>{{ order.state }}</strong></li>
+        <li class="list-group-item list-group-item-secondary text-truncate">Cidade: <strong>{{ order.city }}</strong></li>
         <li class="list-group-item list-group-item-secondary text-truncate">Bairro: <strong>{{ order.district }}</strong></li>
         <li class="list-group-item list-group-item-secondary text-truncate">Rua: <strong>{{ order.street }}</strong></li>
+        <li class="list-group-item list-group-item-secondary text-truncate">Residência: <strong>{{ order.apartment }}</strong></li>
+        <li class="list-group-item list-group-item-secondary text-truncate">Andar: <strong>{{ order.floor }}</strong></li>
+        <li class="list-group-item list-group-item-secondary text-truncate">Estado: <strong>{{ order.state }}</strong></li>
         <li class="list-group-item list-group-item-secondary text-truncate">Complemento: <strong>{{ order.complement }}</strong></li>
         <li class="list-group-item list-group-item-secondary text-truncate">Status do pedido: <strong>{{ order.status }}</strong></li>
         <li class="list-group-item list-group-item-secondary text-truncate">Link de rastreamento: <a target="_blank" class="link" href="{{ order.tracking_link }}">{{ order.tracking_link }}</a></li>

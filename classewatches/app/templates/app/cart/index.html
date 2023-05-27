@@ -43,8 +43,9 @@
     </div>
     {% endfor %}
     {% if not Cart.product_set.count <= 0 %}
+    <p class='lead text-center'>Total: <strong class="text-success fw-bold">R$ {{ total }}</strong></p>
     <div class="bg-white d-flex justify-content-end flex-row align-items-center mt-3 p-2">
-        <a class="btn btn-block btn-lg ml-2 bg-dark text-light" type="button">Entrega</a>
+        <a href="{% url 'app:shipping' %}" class="btn btn-block btn-lg ml-2 bg-dark text-light" type="button">Prosseguir para envio</a>
     </div>
     {% endif %}
 </main>
