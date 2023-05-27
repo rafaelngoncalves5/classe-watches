@@ -283,6 +283,11 @@ class CheckoutView(LoginRequiredMixin, generic.View):
                     "street_number": data["street_number"],
                     # Place to insert "floor"
                 }
+            },
+            "back_urls": {
+                "success": str(reverse_lazy('app:success')),
+                "failure": str(reverse_lazy('app:products')),
+                "pending": str(reverse_lazy('app:success')),
             }
         }
 
