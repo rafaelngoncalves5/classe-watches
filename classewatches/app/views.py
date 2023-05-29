@@ -402,20 +402,19 @@ class PasswordForm(forms.Form):
 class SwitchPasswordView(generic.FormView):
     template_name = 'app/auth/switch_pass.html'
     form_class = PasswordForm
-    #success_url = reverse_lazy('app:change_pass')
     success_url = reverse_lazy('app:success')
 
-    '''def form_valid(self, form, **kwargs):
-        token = self.request.POST['token']
+    def form_valid(self, form: Any) -> HttpResponse:
+        token = form.cleaned_data.get('token')
+        password = form.cleaned_data.get('password')
 
         # Decodes token
         decoded_token = jwt.decode(token, os.getenv('JWT_KEY'), algorithms=["HS256"])
         email = decoded_token['email']
 
-        password = request.POST['password']
-        user: User = User.objects.get(email=request.POST['email'])
+        user: User = User.objects.get(email=email)
 
         user.set_password(password)
         user.save()
-
-        return redirect('app:success')'''
+        
+        return super().form_valid(form)
