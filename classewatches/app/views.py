@@ -18,6 +18,7 @@ from django.core.mail import send_mail
 import jwt
 from django.utils import timezone
 import datetime
+from django.core.validators import RegexValidator
 
 # Validators
 from django.core.exceptions import ValidationError
@@ -370,9 +371,11 @@ class ForgotPasswordView(generic.FormView):
         return super().form_valid(form)
 
 class PasswordForm(forms.Form):
-    token = forms.CharField(max_length=1209, label='Insira o token enviado por email!', label_suffix='Este token tem duração de apenas 5 minutos', help_text="Insira seu token para troca de senha enviado por email")
-    password = forms.CharField(widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Senha")
-    password2 = forms.CharField(widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Confirmação de senha")
+    regex_validator = RegexValidator(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", "Sua senha precisa de oito ou mais caracteres, pelo menos uma letra e pelo menos um número.")
+
+    token = forms.CharField(max_length=1209, label='Insira seu token para troca de senha enviado por email:', help_text="Este token tem duração de apenas 5 minutos.")
+    password = forms.CharField(validators=[regex_validator], widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Senha", help_text="Sua senha precisa de oito ou mais caracteres, pelo menos uma letra e pelo menos um número.")
+    password2 = forms.CharField(validators=[regex_validator], widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Confirmação de senha")
 
     class Meta:
         fields = ['password', 'password2', 'token']
@@ -383,12 +386,6 @@ class PasswordForm(forms.Form):
 
         if not pass1 == pass2:
             raise ValidationError('Senhas não são iguais.')
-        elif not pass1 in 'abcdefghijklmnopqrstuvwxyz':
-            raise ValidationError("Sua senha precisa de pelo menos uma letra.")
-        elif not pass1 in '1234567890':
-            raise ValidationError("Sua senha precisa de pelo menos um número.")
-        elif not pass1 in '!@#$%&*-+':
-            raise ValidationError("Sua senha precisa de pelo manos um dos seguintes símbolo: '!@#$%&*-+'.")
         return self.cleaned_data
     
     def clean_token(self):
@@ -405,8 +402,9 @@ class PasswordForm(forms.Form):
 class SwitchPasswordView(generic.FormView):
     template_name = 'app/auth/switch_pass.html'
     form_class = PasswordForm
-    success_url = reverse_lazy('app:change_pass')
-    
+    #success_url = reverse_lazy('app:change_pass')
+    success_url = reverse_lazy('app:success')
+
     '''def form_valid(self, form, **kwargs):
         token = self.request.POST['token']
 
@@ -414,17 +412,10 @@ class SwitchPasswordView(generic.FormView):
         decoded_token = jwt.decode(token, os.getenv('JWT_KEY'), algorithms=["HS256"])
         email = decoded_token['email']
 
-        context = {
-            'email': email,
-            'form': form
-        }
-        return context'''
-    
-def change_user_password(request):
-    password = request.POST['password']
-    user: User = User.objects.get(email=request.POST['email'])
+        password = request.POST['password']
+        user: User = User.objects.get(email=request.POST['email'])
 
-    user.set_password(password)
-    user.save()
+        user.set_password(password)
+        user.save()
 
-    return redirect('app:success')
+        return redirect('app:success')'''
