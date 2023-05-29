@@ -12,7 +12,6 @@ urlpatterns = [
     path('auth/logout', views.LogoutView.as_view(), name='logout'),
     # Password (forgot and switch)
     path('auth/password/forgot', views.ForgotPasswordView.as_view(), name='forgot_pass'),
-    path('auth/password/token', views.TokenView.as_view(), name='token'),
     path('auth/password/switch', views.SwitchPasswordView.as_view(), name='switch_pass'),
     path('auth/password/switch/change', views.change_user_password, name='change_pass'),
 

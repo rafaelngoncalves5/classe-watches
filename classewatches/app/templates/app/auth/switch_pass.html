@@ -11,9 +11,9 @@
 <main class="container">
 
     {% include 'back.html' %}
-    <h1 class="fs-2 text-center fw-bolder mb-5">Insira sua nova senha</h1>
-
-    <form action="{% url 'app:change_pass' %}" method="post" class="row container p-5 w-fit-content">
+    <h1 class="fs-2 text-center fw-bolder mb-5">Troca de senha</h1>
+    
+    <form method="post" class="row container p-5 w-fit-content">
         {% csrf_token %}
 
         {{ form.as_table }}

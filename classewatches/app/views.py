@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Dict, Optional
 from django.forms.models import BaseModelForm
 from django.http import HttpRequest, HttpResponse, Http404, HttpResponseBadRequest
 from django.views import generic
@@ -10,7 +10,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from . models import Order, Product, Cart
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import password_validation
+from django.contrib.auth.password_validation import CommonPasswordValidator, NumericPasswordValidator
 import requests
 from django.core import serializers
 import os
@@ -350,7 +350,7 @@ class EmailForm(forms.Form):
 class ForgotPasswordView(generic.FormView):
     template_name = 'app/auth/forgot_pass.html'
     form_class = EmailForm
-    success_url = reverse_lazy('app:token')
+    success_url = reverse_lazy('app:switch_pass')
 
     def form_valid(self, form: Any) -> HttpResponse:
 
@@ -369,41 +369,45 @@ class ForgotPasswordView(generic.FormView):
         )
         return super().form_valid(form)
 
-class TokenForm(forms.Form):
-    token = forms.CharField(max_length=1209, label='Token para troca de senha', help_text="Insira seu token para troca de senha enviado por email")
+class PasswordForm(forms.Form):
+    token = forms.CharField(max_length=1209, label='Insira o token enviado por email!', label_suffix='Este token tem duração de apenas 5 minutos', help_text="Insira seu token para troca de senha enviado por email")
+    password = forms.CharField(widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Senha")
+    password2 = forms.CharField(widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Confirmação de senha")
 
+    class Meta:
+        fields = ['password', 'password2', 'token']
+
+    def clean(self) -> Dict[str, Any]:
+        pass1 = self.cleaned_data.get('password')
+        pass2 = self.cleaned_data.get('password2')
+
+        if not pass1 == pass2:
+            raise ValidationError('Senhas não são iguais.')
+        elif not pass1 in 'abcdefghijklmnopqrstuvwxyz':
+            raise ValidationError("Sua senha precisa de pelo menos uma letra.")
+        elif not pass1 in '1234567890':
+            raise ValidationError("Sua senha precisa de pelo menos um número.")
+        elif not pass1 in '!@#$%&*-+':
+            raise ValidationError("Sua senha precisa de pelo manos um dos seguintes símbolo: '!@#$%&*-+'.")
+        return self.cleaned_data
+    
     def clean_token(self):
-        token = self.cleaned_data.get('token')
-        
         try:
+            token = self.cleaned_data.get('token')
             jwt.decode(token, os.getenv('JWT_KEY'), algorithms=["HS256"])
-        except jwt.ExpiredSignatureError:
+        except jwt.exceptions.ExpiredSignatureError:
             # Signature has expired
             raise ValidationError("Este token já expirou, ou não existe.")
         except jwt.exceptions.DecodeError:
             raise ValidationError("Este token já expirou, ou não existe.")
-
         return token
-
-class TokenView(generic.FormView):
-    template_name = 'app/auth/token.html'
-    form_class = TokenForm
-    success_url = reverse_lazy('app:switch_pass')
-
-class PasswordForm(forms.Form, password_validation.CommonPasswordValidator, password_validation.NumericPasswordValidator):
-    password = forms.CharField(widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Senha")
-    password2 = forms.CharField(widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Confirmação de senha")
-    
-    class Meta:
-        fields = ['password', 'password2']
     
 class SwitchPasswordView(generic.FormView):
     template_name = 'app/auth/switch_pass.html'
     form_class = PasswordForm
-    success_url = reverse_lazy('app:success')
+    success_url = reverse_lazy('app:change_pass')
     
-
-    def get_context_data(self, form, **kwargs):
+    '''def form_valid(self, form, **kwargs):
         token = self.request.POST['token']
 
         # Decodes token
@@ -414,7 +418,7 @@ class SwitchPasswordView(generic.FormView):
             'email': email,
             'form': form
         }
-        return context
+        return context'''
     
 def change_user_password(request):
     password = request.POST['password']
