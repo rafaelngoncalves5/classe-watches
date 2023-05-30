@@ -98,6 +98,9 @@ class AdminView(SuperUserRequiredMixin, generic.TemplateView):
             'Order': Order.objects.all().order_by('-order_date'),
             'Product': Product.objects.all().order_by('quantity'),
             'User': User.objects.all(),
+
+            # Data sets
+            
         }
 
         return context
@@ -358,7 +361,7 @@ class ForgotPasswordView(generic.FormView):
         secret = os.getenv('JWT_KEY')
 
         # 1 - Encodes a JWT with expire time = 5 minutes
-        encoded_jwt = jwt.encode({"email": form.cleaned_data['email'], "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=300)}, os.getenv('JWT_KEY'),)
+        encoded_jwt = jwt.encode({"email": form.cleaned_data['email'], "exp": datetime.datetime.now(tz=timezone.utc) + datetime.timedelta(seconds=600)}, os.getenv('JWT_KEY'),)
         
         send_mail(
             "Token para troca de senha",
@@ -373,7 +376,7 @@ class ForgotPasswordView(generic.FormView):
 class PasswordForm(forms.Form):
     regex_validator = RegexValidator(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$", "Sua senha precisa de oito ou mais caracteres, pelo menos uma letra e pelo menos um número.")
 
-    token = forms.CharField(max_length=1209, label='Insira seu token para troca de senha enviado por email:', help_text="Este token tem duração de apenas 5 minutos.")
+    token = forms.CharField(max_length=1209, label='Insira seu token para troca de senha enviado por email:', help_text="Este token tem duração de apenas 10 minutos.")
     password = forms.CharField(validators=[regex_validator], widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Senha", help_text="Sua senha precisa de oito ou mais caracteres, pelo menos uma letra e pelo menos um número.")
     password2 = forms.CharField(validators=[regex_validator], widget=forms.widgets.PasswordInput, min_length=8, required=True, label="Confirmação de senha")
 

@@ -46,7 +46,7 @@
                 </h1>
                 <div class="my-2">
                     <p class="fw-lighter lead text-dark text-wrap mt-5">{{ Product.description }}</p>
-                    <p class="fw-lighter lead text-dark text-wrap">R$ {{ Product.price }}</p>
+                    <p class="fw-lighter lead text-success text-wrap">R$ {{ Product.price }}</p>
                     <p class="fw-bold lead text-success text-wrap mt-5">Disponível</p>
                 </div>
                 <form method="post" action="{% url 'app:add_to_cart' Product.id %}">
